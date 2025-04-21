@@ -65,7 +65,7 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
       <div className="card featured-project-card">
         <div className="featured-project-content">
           <div>
-            <h3 className="text-3xl font-bold mb-4 text-[#1a1a1a]">{project.title}</h3>
+            <h3 className="text-3xl font-bold mb-4 text-[var(--foreground)]">{project.title}</h3>
             <div className="flex space-x-4 mb-6">
               {project.liveLink && (
                 <a
@@ -94,7 +94,7 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
                 </a>
               )}
             </div>
-            <p className="text-[#1a1a1a] mb-6">{project.description}</p>
+            <p className="text-[var(--foreground)] mb-6">{project.description}</p>
             <div className="flex flex-wrap">
               {project.tags?.map((tag) => (
                 <span key={tag._id} className="project-tag">
@@ -105,7 +105,7 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
           </div>
         </div>
         {project.image && (
-          <div className="featured-project-image-container">
+          <div className="featured-project-image-container md:block hidden">
             <div className="featured-project-image">
               <Image
                 src={urlFor(project.image).url()}
@@ -128,7 +128,7 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
     >
       <div className="flex-1">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold text-[#1a1a1a]">{project.title}</h3>
+          <h3 className="text-xl font-bold text-[var(--foreground)]">{project.title}</h3>
           <div className="flex items-center gap-2 text-sm text-[var(--muted)]">
             <span className={`transition-opacity duration-300 ${isExpanded ? 'opacity-0' : 'opacity-100'}`}>
               More details
@@ -188,7 +188,7 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
             isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <p className="text-[#1a1a1a] text-sm pt-3">{project.description}</p>
+          <p className="text-[var(--foreground)] text-sm pt-3">{project.description}</p>
         </div>
       </div>
     </div>

@@ -25,9 +25,14 @@ export default async function ProjectsPage() {
   const regularProjects = projects.filter((p: Project) => !p.isFeatured)
 
   return (
-    <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
       {featuredProjects.length > 0 && (
         <>
+          <div className="flex items-center mb-12">
+            <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+            <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Featured Projects</h2>
+            <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+          </div>
           <div className="grid grid-cols-1 gap-8 mb-16">
             {featuredProjects.map((project: Project) => (
               <ProjectCard key={project._id} project={project} isFeatured={true} />
@@ -36,7 +41,11 @@ export default async function ProjectsPage() {
         </>
       )}
       
-      <h2 className="text-2xl font-bold mb-8">Other Projects</h2>
+      <div className="flex items-center mb-12">
+        <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+        <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Other Projects</h2>
+        <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+      </div>
       <div className="grid grid-cols-1 gap-4">
         {regularProjects.map((project: Project) => (
           <ProjectCard key={project._id} project={project} />

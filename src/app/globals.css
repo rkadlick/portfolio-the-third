@@ -166,7 +166,7 @@
   .theme-toggle-button {
     @apply fixed bottom-6 right-6 p-3 rounded-full
            bg-[var(--background)] text-[var(--foreground)]
-           shadow-lg hover:shadow-xl
+           shadow-lg hover:shadow-xl cursor-pointer
            transition-all duration-300 z-50
            sm:p-4;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 2px var(--border);
@@ -265,7 +265,11 @@
 
   .project-tag {
     @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium 
-           bg-[var(--primary)]/10 text-[var(--primary)] mr-2 mb-2;
+           bg-[var(--primary)]/10 text-[var(--primary)] mr-2 mb-2 cursor-default;
+  }
+
+  .non-featured-project-card .project-tag {
+    @apply cursor-pointer;
   }
 
   /* Lists */
