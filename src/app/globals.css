@@ -315,4 +315,79 @@
   blockquote {
     @apply border-l-4 border-[var(--primary)] pl-4 italic my-4;
   }
+
+  /* Holographic Profile Picture */
+  .holo-container {
+    @apply relative rounded-2xl overflow-hidden;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+
+  .holo-card {
+    @apply relative rounded-2xl overflow-hidden;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .holo-border {
+    @apply absolute inset-0 z-30 rounded-2xl pointer-events-none opacity-0;
+    border: 2px solid transparent;
+    background: linear-gradient(to right, var(--primary), var(--accent)) border-box;
+    mask: 
+      linear-gradient(#fff 0 0) padding-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) padding-box, 
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    transition: opacity 0.3s ease;
+  }
+
+  .holo-container:hover .holo-border {
+    opacity: 1;
+  }
+
+  .holo-cursor-light {
+    @apply absolute inset-0 z-20 rounded-2xl opacity-0 pointer-events-none;
+    background: radial-gradient(
+      circle 15rem at var(--cursor-x, 50%) var(--cursor-y, 50%),
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(163, 201, 236, 0.2) 35%,
+      transparent 70%
+    );
+    transition: opacity 0.5s;
+  }
+
+  .holo-container:hover .holo-cursor-light {
+    opacity: 1;
+  }
+
+  .holo-shine {
+    @apply absolute inset-0 z-20 pointer-events-none;
+    background: linear-gradient(
+      125deg,
+      transparent 0%,
+      rgba(163, 201, 236, 0.1) 25%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(163, 201, 236, 0.1) 75%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: shine 5s infinite;
+  }
+
+  .holo-container:hover .holo-card {
+    transform: rotateX(var(--rotateX)) rotateY(var(--rotateY)) scale(1.02);
+  }
+
+  @keyframes shine {
+    0% {
+      transform: translateX(-100%) rotate(0deg);
+    }
+    20%, 100% {
+      transform: translateX(100%) rotate(0deg);
+    }
+  }
 }
