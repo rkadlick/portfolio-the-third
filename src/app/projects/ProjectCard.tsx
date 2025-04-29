@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Project } from '../../types'
 import { urlFor } from '../../lib/sanity'
 
-function RocketIcon() {
+function LightningIcon() {
   return (
     <svg 
       className="icon-spin w-5 h-5" 
@@ -14,14 +14,7 @@ function RocketIcon() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path 
-        d="M12.5 4.5C9 4.5 7 7 7 9.5C7 12.5 9.5 14 9.5 14C9.5 14 8.5 21.5 12.5 21.5C16.5 21.5 15.5 14 15.5 14C15.5 14 18 12.5 18 9.5C18 7 16 4.5 12.5 4.5Z" 
-        stroke="currentColor" 
-        strokeWidth="1.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round"
-      />
-      <path 
-        d="M12.5 14C14.7091 14 16.5 12.2091 16.5 10C16.5 7.79086 14.7091 6 12.5 6C10.2909 6 8.5 7.79086 8.5 10C8.5 12.2091 10.2909 14 12.5 14Z" 
+        d="M13 3L4 14H12L11 21L20 10H12L13 3Z"
         stroke="currentColor" 
         strokeWidth="1.5" 
         strokeLinecap="round" 
@@ -75,7 +68,7 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
                   className="button button-primary"
                 >
                   <span className="button-text" style={{ minWidth: '88px' }}>
-                    <RocketIcon />
+                    <LightningIcon />
                     <span>Live Demo</span>
                   </span>
                 </a>
@@ -154,7 +147,7 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
               onClick={(e) => e.stopPropagation()}
             >
               <span className="button-text" style={{ minWidth: '88px' }}>
-                <RocketIcon />
+                <LightningIcon />
                 <span>Live Demo</span>
               </span>
             </a>

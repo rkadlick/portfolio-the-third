@@ -8,6 +8,32 @@ interface FormData {
   message: string
 }
 
+function PaperPlaneIcon() {
+  return (
+    <svg 
+      className="icon-spin w-5 h-5" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path 
+        d="M21.5 12L3.5 3.5L6.5 12L3.5 20.5L21.5 12Z" 
+        stroke="currentColor" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+      <path 
+        d="M6.5 12H12.5" 
+        stroke="currentColor" 
+        strokeWidth="1.5" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export default function ContactPage() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -100,9 +126,12 @@ export default function ContactPage() {
             <div>
               <button
                 type="submit"
-                className="button button-primary w-full sm:w-auto"
+                className="button button-primary w-full sm:w-auto cursor-pointer"
               >
-                <span className="button-text justify-center sm:justify-start">Send Message</span>
+                <span className="button-text justify-center sm:justify-start" style={{ minWidth: '108px' }}>
+                  <PaperPlaneIcon />
+                  <span>Send Message</span>
+                </span>
               </button>
             </div>
           </form>
