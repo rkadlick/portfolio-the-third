@@ -14,6 +14,11 @@ interface ContactProps {
   fromSection?: 'home' | 'projects' | 'contact' | 'blog';
 }
 
+type SubmissionStatus = {
+  type: 'success' | 'error' | null;
+  message: string;
+}
+
 function PaperPlaneIcon() {
   return (
     <svg
@@ -46,6 +51,8 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
     email: '',
     message: '',
   })
+  const [status, setStatus] = useState<SubmissionStatus>({ type: null, message: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Determine animation direction based on navigation flow
   const getDirection = (): 'left' | 'right' => {
@@ -55,15 +62,31 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
     return fromIndex < currentIndex ? 'right' : 'left';
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    // For now, just log the form data
-    console.log('Form submitted:', formData)
-    // Reset form
-    setFormData({ name: '', email: '', message: '' })
-    // Show success message
-    alert('Message sent! (This is a demo - no actual message was sent)')
-  }
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus({ type: null, message: '' });
+    setIsSubmitting(true);
+    
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setStatus({ type: 'success', message: 'Message sent successfully!' });
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setStatus({ type: 'error', message: `Error: ${json.error || 'Unknown error occurred'}` });
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus({ type: 'error', message: 'An unexpected error occurred' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <motion.div
@@ -144,16 +167,37 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
                   className="block w-full rounded-md border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] shadow-sm focus:border-[var(--primary)] focus:ring-[var(--primary)] sm:text-sm"
                 />
               </div>
-              <div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 <button
                   type="submit"
-                  className="button button-primary w-full sm:w-auto cursor-pointer"
+                  disabled={isSubmitting}
+                  className="button button-primary w-full sm:w-auto cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <span className="button-text justify-center sm:justify-start" style={{ minWidth: '108px' }}>
-                    <PaperPlaneIcon />
-                    <span>Send Message</span>
+                  <span className="button-text justify-center relative" style={{ minWidth: '108px' }}>
+                    {isSubmitting ? (
+                      <>
+                        {/* Invisible placeholder to maintain button size */}
+                        <div className="opacity-0">
+                          <PaperPlaneIcon />
+                          <span>Send Message</span>
+                        </div>
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                          <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-[var(--card-bg)]"></div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <PaperPlaneIcon />
+                        <span>Send Message</span>
+                      </>
+                    )}
                   </span>
                 </button>
+                {status.type && (
+                  <div className={`text-sm ${status.type === 'success' ? 'text-green-500' : 'text-red-500'} flex items-center`}>
+                    {status.message}
+                  </div>
+                )}
               </div>
             </form>
           </div>

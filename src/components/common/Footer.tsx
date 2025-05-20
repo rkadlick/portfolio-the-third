@@ -6,7 +6,7 @@ import { useSection } from '../../context/SectionContext'
 const socialLinks = [
   {
     name: 'GitHub',
-    href: 'https://github.com/yourusername',
+    href: 'https://github.com/rkadlick',
     icon: (props: React.SVGProps<SVGSVGElement>) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -19,7 +19,7 @@ const socialLinks = [
   },
   {
     name: 'LinkedIn',
-    href: 'https://linkedin.com/in/yourusername',
+    href: 'https://linkedin.com/in/ryankadlick',
     icon: (props: React.SVGProps<SVGSVGElement>) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
