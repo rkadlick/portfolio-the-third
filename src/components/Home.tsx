@@ -79,7 +79,7 @@ export default function Home({ fromSection }: HomeProps) {
         exit="exit"
         className="flex items-center justify-between w-full max-w-7xl mx-auto px-8 -translate-y-16"
       >
-        <div className="w-full lg:w-[60%] bg-[var(--card-bg)]/40 backdrop-blur-sm rounded-2xl p-12">
+        <div className="w-full lg:w-[60%] bg-[var(--card-bg)]/60 backdrop-blur-md rounded-2xl p-12">
           <h1 className="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl">
             <span className="block mb-2">Hi, I&apos;m Ryan</span>
             <span
