@@ -1,13 +1,25 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,500;6..12,600;6..12,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&display=swap');
+
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
+  /* Font families */
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Nunito Sans', sans-serif;
+  --font-tertiary: 'Fira Mono', monospace;
+  --font-logo: 'Josefin Sans', sans-serif;
+
   /* Light theme */
   --background: #ffffff;
   --foreground: #1a1a1a;
-  --card-bg: #f3f4f6;
-  --muted: #9A94BC;
-  --muted-hover: #8885a8;
+  --card-bg: #eef0f3;
+  --muted: #6B7280;
+  --muted-hover: #4B5563;
   --border: #e2e4e8;
   --primary: #24507A;
   --primary-hover: #245e7a;
@@ -24,35 +36,46 @@
   --card-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   --secondary-hover: #8885a8;
+  --logo-text: #000000;
+  --nav-link: #4B5563;
+  --nav-link-hover: #1a1a1a;
+  --nav-link-active: #000000;
+  --nav-link-active-bg: #ffffff;
 }
 
 [data-theme="dark"] {
-  --background: #0a0a0a;
-  --foreground: #f9fafb;
-  --card-bg: #171717;
-  --card-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --muted: #9A94BC;
-  --muted-hover: #b4afd3;
-  --border: #262626;
-  --primary: #a3c9ec;
-  --primary-hover: #b8d7f2;
-  --primary-foreground: #1a1a1a;
-  --secondary: #b4afd3;
-  --accent: #e0faf9;
-  --input-bg: #171717;
-  --input-border: #262626;
-  --input-focus: #a3c9ec;
-  --input-placeholder: #6b7280;
-  --button-bg: #a3c9ec;
-  --button-text: #1a1a1a;
-  --button-hover: #b8d7f2;
-  --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.4);
-  --secondary-hover: #c9c5e2;
+  --background: #1a1a1a;
+  --foreground: #ffffff;
+  --card-bg: #2a2a2a;
+  --muted: #9CA3AF;
+  --muted-hover: #D1D5DB;
+  --border: #374151;
+  --primary: #93C5FD;
+  --primary-hover: #60A5FA;
+  --primary-foreground: #ffffff;
+  --secondary: #6D28D9;
+  --accent: #3B82F6;
+  --input-bg: #374151;
+  --input-border: #4B5563;
+  --input-focus: #6B7280;
+  --input-placeholder: #9CA3AF;
+  --button-bg: #6B7280;
+  --button-text: #ffffff;
+  --button-hover: #4B5563;
+  --card-shadow: 0 1px 2px 0 rgb(255 255 255 / 0.05);
+  --card-shadow-hover: 0 4px 6px -1px rgb(255 255 255 / 0.1);
+  --secondary-hover: #8885a8;
+  --logo-text: #ffffff;
+  --nav-link: #9CA3AF;
+  --nav-link-hover: #1a1a1a;
+  --nav-link-active: #1a1a1a;
+  --nav-link-active-bg: #ffffff;
 }
 
 @layer base {
   body {
     @apply bg-[var(--background)] text-[var(--foreground)] antialiased transition-colors duration-100;
+    font-family: var(--font-secondary);
   }
 
   /* Modern focus styles */
@@ -61,6 +84,10 @@
   }
 
   /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+  }
+
   h1 {
     @apply text-3xl font-bold tracking-tight mb-4;
   }
@@ -75,6 +102,7 @@
 
   p {
     @apply leading-relaxed mb-4 text-[var(--foreground)]/90;
+    font-family: var(--font-secondary);
   }
 
   a {
@@ -160,6 +188,37 @@
 
   .button-secondary:hover::after {
     @apply opacity-100;
+  }
+
+  /* Navbar Links */
+  .nav-link {
+    @apply relative flex items-center justify-center h-[3.25rem] px-4 text-sm font-medium 
+           transition-all duration-300 cursor-pointer overflow-hidden;
+    color: var(--nav-link);
+  }
+
+  .nav-link::before {
+    @apply content-[''] absolute inset-0 rounded-full
+           opacity-0 transition-all duration-300
+           -z-10;
+    background: var(--nav-link-active-bg);
+  }
+
+  .nav-link:hover::before {
+    @apply opacity-100;
+  }
+
+  .nav-link.active {
+    color: var(--nav-link-active);
+  }
+
+  .nav-link.active::before {
+    @apply opacity-100 rounded-full;
+    background: var(--nav-link-active-bg);
+  }
+
+  .nav-link:not(.active):hover {
+    color: var(--nav-link-hover);
   }
 
   /* Theme Toggle Button */
@@ -389,5 +448,21 @@
     20%, 100% {
       transform: translateX(100%) rotate(0deg);
     }
+  }
+
+  /* Code blocks and monospace text */
+  pre, code, .monospace {
+    font-family: var(--font-tertiary);
+  }
+
+  /* Meta text, small text, and technical details */
+  .meta-text, small, .technical-details, .project-tag {
+    @apply text-sm;
+    font-family: var(--font-tertiary);
+  }
+
+  /* Logo specific font */
+  .logo-text {
+    font-family: var(--font-logo) !important;
   }
 }

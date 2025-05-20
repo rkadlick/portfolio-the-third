@@ -1,22 +1,21 @@
 "use client"
 
 import { useState } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import Logo from './Logo'
 
+interface NavbarProps {
+  currentSection: 'home' | 'contact' | 'projects' | 'blog';
+  onSectionChange: (section: 'home' | 'contact' | 'projects' | 'blog') => void;
+}
+
 const navigation = [
-  { name: 'Projects', href: '/projects' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Projects', section: 'projects' as const },
+  { name: 'Contact', section: 'contact' as const },
+  { name: 'Blog', section: 'blog' as const },
 ]
 
-export default function Navbar() {
+export default function Navbar({ currentSection, onSectionChange }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const pathname = usePathname()
-
-  const isCurrentPath = (path: string) => {
-    return pathname === path
-  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -34,48 +33,25 @@ export default function Navbar() {
         <div className="absolute left-1/2 -translate-x-1/2 h-full w-[22rem] sm:w-[36rem]">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
-            <Link 
-              href="/" 
-              className={`flex items-center justify-center h-full px-4 transition-colors duration-200 relative
-                ${isCurrentPath('/') 
-                  ? 'text-[var(--foreground)]' 
-                  : 'text-[var(--muted)] hover:text-[var(--muted-hover)]'}`}
+            <button 
+              onClick={() => onSectionChange('home')}
+              className={`nav-link ${currentSection === 'home' ? 'active' : ''}`}
             >
               <Logo />
-              {isCurrentPath('/') && (
-                <span className="absolute inset-0 -z-10 rounded-full bg-[var(--background)]"></span>
-              )}
-            </Link>
+            </button>
 
             {/* Navigation Links */}
             <div className="flex items-center justify-center gap-1 h-full">
               {navigation.map((item) => (
-                <Link
+                <button
                   key={item.name}
-                  href={item.href}
-                  className={`relative flex items-center justify-center h-[2.75rem] px-4 text-sm font-medium transition-colors duration-200
-                    ${isCurrentPath(item.href)
-                      ? 'text-[var(--foreground)]'
-                      : 'text-[var(--muted)] hover:text-[var(--muted-hover)]'}`}
+                  onClick={() => onSectionChange(item.section)}
+                  className={`nav-link ${currentSection === item.section ? 'active' : ''}`}
                 >
                   {item.name}
-                  {isCurrentPath(item.href) && (
-                    <span className="absolute inset-0 -z-10 rounded-full bg-[var(--background)]"></span>
-                  )}
-                </Link>
+                </button>
               ))}
             </div>
-
-            {/* Blog Link */}
-            <Link
-              href="/blog"
-              className={`flex items-center justify-center h-[2.75rem] px-4 rounded-full text-sm font-medium transition-colors duration-200
-                ${isCurrentPath('/blog')
-                  ? 'bg-blue-100 text-blue-600'
-                  : 'text-[var(--muted)] hover:text-blue-600 hover:bg-blue-50'}`}
-            >
-              Blog
-            </Link>
           </div>
         </div>
 
@@ -84,7 +60,7 @@ export default function Navbar() {
           <button
             type="button"
             className="inline-flex items-center justify-center p-2 rounded-full text-[var(--muted)] 
-                     hover:text-[var(--muted-hover)] hover:bg-[var(--background)]"
+                     hover:text-[var(--muted-hover)] hover:bg-[var(--background)] cursor-pointer"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <span className="sr-only">Open main menu</span>
@@ -127,36 +103,27 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="sm:hidden bg-[var(--card-bg)]/95 backdrop-blur-sm">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link
-              href="/"
-              className={`block px-3 py-2 rounded-full text-base font-medium transition-colors duration-200
-                ${isCurrentPath('/')
-                  ? 'bg-[var(--background)] text-[var(--foreground)]'
-                  : 'text-[var(--muted)] hover:text-[var(--muted-hover)] hover:bg-[var(--background)]'}`}
+            <button
+              onClick={() => {
+                onSectionChange('home');
+                setIsMobileMenuOpen(false);
+              }}
+              className={`nav-link block w-full text-left ${currentSection === 'home' ? 'active' : ''}`}
             >
               Home
-            </Link>
+            </button>
             {navigation.map((item) => (
-              <Link
+              <button
                 key={item.name}
-                href={item.href}
-                className={`block px-3 py-2 rounded-full text-base font-medium transition-colors duration-200
-                  ${isCurrentPath(item.href)
-                    ? 'bg-[var(--background)] text-[var(--foreground)]'
-                    : 'text-[var(--muted)] hover:text-[var(--muted-hover)] hover:bg-[var(--background)]'}`}
+                onClick={() => {
+                  onSectionChange(item.section);
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`nav-link block w-full text-left ${currentSection === item.section ? 'active' : ''}`}
               >
                 {item.name}
-              </Link>
+              </button>
             ))}
-            <Link
-              href="/blog"
-              className={`block px-3 py-2 rounded-full text-base font-medium transition-colors duration-200
-                ${isCurrentPath('/blog')
-                  ? 'bg-blue-100 text-blue-600'
-                  : 'text-[var(--muted)] hover:text-blue-600 hover:bg-blue-50'}`}
-            >
-              Blog
-            </Link>
           </div>
         </div>
       )}

@@ -1,3 +1,8 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { useSection } from '../../context/SectionContext'
+
 const socialLinks = [
   {
     name: 'GitHub',
@@ -28,8 +33,20 @@ const socialLinks = [
 ]
 
 export default function Footer() {
+  const { currentSection } = useSection()
+  const isHome = currentSection === 'home'
+  console.log(currentSection)
+
+  if (isHome) return null
+
   return (
-    <footer className="bg-[var(--card-bg)] border-t border-[var(--border)]">
+    <motion.footer 
+      className="bg-[var(--card-bg)] border-t border-[var(--border)] relative z-10"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.1 }}
+    >
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
           {socialLinks.map((item) => (
@@ -51,6 +68,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   )
 } 

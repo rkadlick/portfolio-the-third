@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import { Project } from '../../types'
-import { urlFor } from '../../lib/sanity'
+import { Project } from '../types'
+import { urlFor } from '../lib/sanity'
 
 function LightningIcon() {
   return (
@@ -14,7 +14,7 @@ function LightningIcon() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path 
-        d="M13 3L4 14H12L11 21L20 10H12L13 3Z"
+        d="M13 2L3 14H12L11 22L21 10H12L13 2Z"
         stroke="currentColor" 
         strokeWidth="1.5" 
         strokeLinecap="round" 
@@ -33,14 +33,7 @@ function CodeIcon() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path 
-        d="M16 18L22 12L16 6" 
-        stroke="currentColor" 
-        strokeWidth="1.5" 
-        strokeLinecap="round" 
-        strokeLinejoin="round"
-      />
-      <path 
-        d="M8 6L2 12L8 18" 
+        d="M16 18L22 12L16 6M8 6L2 12L8 18"
         stroke="currentColor" 
         strokeWidth="1.5" 
         strokeLinecap="round" 
