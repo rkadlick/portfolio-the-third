@@ -60,9 +60,9 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
                   rel="noopener noreferrer"
                   className="button button-primary"
                 >
-                  <span className="button-text" style={{ minWidth: '88px' }}>
+                  <span className="button-text">
                     <LightningIcon />
-                    <span>Live Demo</span>
+                    <span>Explore</span>
                   </span>
                 </a>
               )}
@@ -73,9 +73,9 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
                   rel="noopener noreferrer"
                   className="button button-secondary"
                 >
-                  <span className="button-text" style={{ minWidth: '108px' }}>
+                  <span className="button-text">
                     <CodeIcon />
-                    <span>Source Code</span>
+                    <span>Source</span>
                   </span>
                 </a>
               )}
@@ -139,9 +139,9 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
               className="button button-primary"
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="button-text" style={{ minWidth: '88px' }}>
+              <span className="button-text">
                 <LightningIcon />
-                <span>Live Demo</span>
+                <span>Explore</span>
               </span>
             </a>
           )}
@@ -153,9 +153,9 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
               className="button button-secondary"
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="button-text" style={{ minWidth: '108px' }}>
+              <span className="button-text">
                 <CodeIcon />
-                <span>Source Code</span>
+                <span>Source</span>
               </span>
             </a>
           )}

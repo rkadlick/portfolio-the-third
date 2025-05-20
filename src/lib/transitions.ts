@@ -15,30 +15,27 @@ export const slideIn = {
 }
 
 export const getPageTransition = (direction: 'left' | 'right'): Variants => {
-  const xOffset = direction === 'left' ? -200 : 200
   return {
     initial: { 
-      x: xOffset,
+      x: direction === 'left' ? -100 : 100,
       opacity: 0 
     },
     animate: { 
       x: 0,
       opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 50,
-        damping: 20,
-        duration: 0.8
+        type: "tween",
+        ease: "easeOut",
+        duration: 0.3
       }
     },
     exit: { 
-      x: xOffset,
+      x: direction === 'left' ? 100 : -100,
       opacity: 0,
       transition: {
-        type: "spring",
-        stiffness: 50,
-        damping: 20,
-        duration: 0.8
+        type: "tween",
+        ease: "easeIn",
+        duration: 0.3
       }
     }
   }

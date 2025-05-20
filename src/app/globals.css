@@ -18,8 +18,8 @@
   --background: #ffffff;
   --foreground: #1a1a1a;
   --card-bg: #eef0f3;
-  --muted: #6B7280;
-  --muted-hover: #4B5563;
+  --muted: #4B5563;
+  --muted-hover: #374151;
   --border: #e2e4e8;
   --primary: #24507A;
   --primary-hover: #245e7a;
@@ -41,17 +41,18 @@
   --nav-link-hover: #1a1a1a;
   --nav-link-active: #000000;
   --nav-link-active-bg: #ffffff;
+  --tag-bg: rgba(36, 80, 122, 0.12);
 }
 
 [data-theme="dark"] {
   --background: #1a1a1a;
   --foreground: #ffffff;
   --card-bg: #32323e;
-  --muted: #9CA3AF;
-  --muted-hover: #D1D5DB;
+  --muted: #CDD1D9;
+  --muted-hover: #E5E7EB;
   --border: #374151;
-  --primary: #93C5FD;
-  --primary-hover: #60A5FA;
+  --primary: #A5D4FF;
+  --primary-hover: #93C5FD;
   --primary-foreground: #ffffff;
   --secondary: #6D28D9;
   --accent: #3B82F6;
@@ -66,10 +67,11 @@
   --card-shadow-hover: 0 4px 6px -1px rgb(255 255 255 / 0.1);
   --secondary-hover: #8885a8;
   --logo-text: #ffffff;
-  --nav-link: #9CA3AF;
+  --nav-link: #CDD1D9;
   --nav-link-hover: #1a1a1a;
   --nav-link-active: #1a1a1a;
   --nav-link-active-bg: #ffffff;
+  --tag-bg: rgba(165, 212, 255, 0.15);
 }
 
 @layer base {
@@ -364,7 +366,8 @@
 
   .project-tag {
     @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium 
-           bg-[var(--primary)]/10 text-[var(--primary)] mr-2 mb-2 cursor-default;
+           bg-[var(--tag-bg)] text-[var(--primary)] mr-2 mb-2 cursor-default
+           ring-1 ring-[var(--primary)]/20;
   }
 
   .non-featured-project-card .project-tag {

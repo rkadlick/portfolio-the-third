@@ -16,10 +16,12 @@ const navigation = [
 
 export default function Navbar({ currentSection, onSectionChange }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  console.log('navbar render')
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Background container */}
+      
       <div className="fixed top-0 left-1/2 h-[4.5rem] w-full -translate-x-1/2 
         border border-white/[0.1] dark:border-white/[0.05]
         bg-[var(--card-bg)]/80 dark:bg-[var(--card-bg)]/75
@@ -29,19 +31,20 @@ export default function Navbar({ currentSection, onSectionChange }: NavbarProps)
       </div>
 
       <nav className="relative h-[4.5rem] sm:h-[3.25rem] sm:mt-6">
-        {/* Desktop Navigation */}
         <div className="absolute left-1/2 -translate-x-1/2 h-full w-[22rem] sm:w-[36rem]">
           <div className="flex items-center justify-between h-full">
-            {/* Logo */}
-            <button 
-              onClick={() => onSectionChange('home')}
-              className={`nav-link ${currentSection === 'home' ? 'active' : ''}`}
-            >
-              <Logo />
-            </button>
+            {/* Logo - always visible in header */}
+            <div className="flex items-center justify-center h-full sm:justify-start w-full sm:w-auto">
+              <button 
+                onClick={() => onSectionChange('home')}
+                className={`nav-link ${currentSection === 'home' ? 'active' : ''}`}
+              >
+                <Logo />
+              </button>
+            </div>
 
-            {/* Navigation Links */}
-            <div className="flex items-center justify-center gap-1 h-full">
+            {/* Navigation Links - hidden on mobile */}
+            <div className="hidden sm:flex items-center justify-center gap-1 h-full">
               {navigation.map((item) => (
                 <button
                   key={item.name}
@@ -60,7 +63,7 @@ export default function Navbar({ currentSection, onSectionChange }: NavbarProps)
           <button
             type="button"
             className="inline-flex items-center justify-center p-2 rounded-full text-[var(--muted)] 
-                     hover:text-[var(--muted-hover)] hover:bg-[var(--background)] cursor-pointer"
+                     hover:text-[var(--foreground)] hover:bg-[rgba(0,0,0,0.075)] cursor-pointer transition-all duration-300"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <span className="sr-only">Open main menu</span>
@@ -103,15 +106,6 @@ export default function Navbar({ currentSection, onSectionChange }: NavbarProps)
       {isMobileMenuOpen && (
         <div className="sm:hidden bg-[var(--card-bg)]/95 backdrop-blur-sm">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <button
-              onClick={() => {
-                onSectionChange('home');
-                setIsMobileMenuOpen(false);
-              }}
-              className={`nav-link block w-full text-left ${currentSection === 'home' ? 'active' : ''}`}
-            >
-              Home
-            </button>
             {navigation.map((item) => (
               <button
                 key={item.name}
@@ -119,7 +113,11 @@ export default function Navbar({ currentSection, onSectionChange }: NavbarProps)
                   onSectionChange(item.section);
                   setIsMobileMenuOpen(false);
                 }}
-                className={`nav-link block w-full text-left ${currentSection === item.section ? 'active' : ''}`}
+                className={`nav-link w-full ${currentSection === item.section ? 'active' : ''}`}
+                style={{
+                  margin: '0 auto',
+                  width: '80%'
+                }}
               >
                 {item.name}
               </button>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { getPageTransition, staggerContainer, fadeIn } from '../lib/transitions'
+import { getPageTransition } from '../lib/transitions'
 import ProjectCard from './ProjectCard'
 import { Project } from '../types'
 
@@ -20,7 +20,6 @@ export default function Projects({ fromSection }: ProjectsProps) {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // Use preloaded data if available
         if (preloadedProjects) {
           setProjects(preloadedProjects)
           setIsLoading(false)
@@ -30,7 +29,6 @@ export default function Projects({ fromSection }: ProjectsProps) {
         const response = await fetch('/api/projects')
         const data = await response.json()
         setProjects(data)
-        // Store the data for future use
         preloadedProjects = data
       } catch (error) {
         console.error('Error fetching projects:', error)
@@ -40,20 +38,6 @@ export default function Projects({ fromSection }: ProjectsProps) {
     }
 
     fetchProjects()
-  }, [])
-
-  // Pre-fetch projects when component mounts
-  useEffect(() => {
-    if (!preloadedProjects) {
-      fetch('/api/projects')
-        .then(res => res.json())
-        .then(data => {
-          preloadedProjects = data
-        })
-        .catch(error => {
-          console.error('Error pre-fetching projects:', error)
-        })
-    }
   }, [])
 
   const getDirection = () => {
@@ -77,56 +61,46 @@ export default function Projects({ fromSection }: ProjectsProps) {
   const regularProjects = projects.filter((p: Project) => !p.isFeatured)
 
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      variants={getPageTransition(getDirection())}
-      className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8"
-    >
-      <div className="backdrop-blur-sm rounded-2xl p-8">
-        {featuredProjects.length > 0 && (
-          <motion.div variants={fadeIn}>
+      <motion.div
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={getPageTransition(getDirection())}
+        className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8"
+      >
+        <div className="backdrop-blur-sm rounded-2xl p-8">
+          {featuredProjects.length > 0 && (
+            <div>
+              <div className="flex items-center mb-12">
+                <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+                <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Featured Projects</h2>
+                <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+              </div>
+              <div className="grid grid-cols-1 gap-8 mb-16">
+                {featuredProjects.map((project: Project) => (
+                  <div key={project._id}>
+                    <ProjectCard project={project} isFeatured={true} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <div>
             <div className="flex items-center mb-12">
               <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
-              <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Featured Projects</h2>
+              <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Other Projects</h2>
               <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
             </div>
-            <motion.div 
-              variants={staggerContainer}
-              initial="initial"
-              animate="animate"
-              className="grid grid-cols-1 gap-8 mb-16"
-            >
-              {featuredProjects.map((project: Project) => (
-                <motion.div key={project._id} variants={fadeIn}>
-                  <ProjectCard project={project} isFeatured={true} />
-                </motion.div>
+            <div className="grid grid-cols-1 gap-4">
+              {regularProjects.map((project: Project) => (
+                <div key={project._id}>
+                  <ProjectCard project={project} />
+                </div>
               ))}
-            </motion.div>
-          </motion.div>
-        )}
-        
-        <motion.div variants={fadeIn}>
-          <div className="flex items-center mb-12">
-            <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
-            <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Other Projects</h2>
-            <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+            </div>
           </div>
-          <motion.div 
-            variants={staggerContainer}
-            initial="initial"
-            animate="animate"
-            className="grid grid-cols-1 gap-4"
-          >
-            {regularProjects.map((project: Project) => (
-              <motion.div key={project._id} variants={fadeIn}>
-                <ProjectCard project={project} />
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
-    </motion.div>
+        </div>
+      </motion.div>
   )
 } 

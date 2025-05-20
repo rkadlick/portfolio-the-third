@@ -32,7 +32,7 @@ export default function MainContent() {
   };
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Navbar currentSection={currentSection} onSectionChange={handleSectionChange} />
       <div className="flex-grow">
         <div className="max-w-7xl mx-auto w-full flex items-center">
@@ -41,6 +41,6 @@ export default function MainContent() {
           </AnimatePresence>
         </div>
       </div>
-    </>
+    </div>
   );
 } 

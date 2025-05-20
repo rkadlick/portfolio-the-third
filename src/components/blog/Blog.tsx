@@ -7,30 +7,31 @@ import { getPageTransition } from '@/lib/transitions'
 import BlogCard from './BlogCard'
 import BlogPost from './BlogPost'
 
+// Pre-load blog posts data
+let preloadedPosts: Post[] | null = null;
+
 interface BlogProps {
   fromSection?: string;
 }
 
 export default function Blog({ fromSection }: BlogProps) {
   const [posts, setPosts] = useState<Post[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(!preloadedPosts)
   const [selectedPost, setSelectedPost] = useState<Post | null>(null)
-
-  const getDirection = () => {
-    const sections = ['home', 'projects', 'contact', 'blog']
-    const currentIndex = sections.indexOf('blog')
-    const fromIndex = fromSection ? sections.indexOf(fromSection) : -1
-    
-    if (fromIndex === -1) return 'left'
-    return fromIndex < currentIndex ? 'right' : 'left'
-  }
 
   useEffect(() => {
     async function fetchPosts() {
       try {
+        if (preloadedPosts) {
+          setPosts(preloadedPosts)
+          setLoading(false)
+          return
+        }
+
         const response = await fetch('/api/blog')
         const data = await response.json()
         setPosts(data)
+        preloadedPosts = data
       } catch (error) {
         console.error('Error fetching posts:', error)
       } finally {
@@ -40,6 +41,15 @@ export default function Blog({ fromSection }: BlogProps) {
 
     fetchPosts()
   }, [])
+
+  const getDirection = () => {
+    const sections = ['home', 'projects', 'contact', 'blog']
+    const currentIndex = sections.indexOf('blog')
+    const fromIndex = fromSection ? sections.indexOf(fromSection) : -1
+    
+    if (fromIndex === -1) return 'left'
+    return fromIndex < currentIndex ? 'right' : 'left'
+  }
 
   if (loading) {
     return (
@@ -51,6 +61,22 @@ export default function Blog({ fromSection }: BlogProps) {
 
   if (selectedPost) {
     return (
+        <motion.div
+          variants={getPageTransition(getDirection())}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8"
+        >
+          <div className="backdrop-blur-sm rounded-2xl p-8">
+            <BlogPost post={selectedPost} onBack={() => setSelectedPost(null)} />
+          </div>
+        </motion.div>
+    )
+  }
+
+  return (
+    
       <motion.div
         variants={getPageTransition(getDirection())}
         initial="initial"
@@ -59,38 +85,23 @@ export default function Blog({ fromSection }: BlogProps) {
         className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8"
       >
         <div className="backdrop-blur-sm rounded-2xl p-8">
-          <BlogPost post={selectedPost} onBack={() => setSelectedPost(null)} />
+          <div className="flex items-center mb-12">
+            <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+            <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Blog Posts</h2>
+            <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+          </div>
+          <div className="grid grid-cols-1 gap-8">
+            {posts.map((post) => (
+              <div 
+                key={post._id} 
+                onClick={() => setSelectedPost(post)}
+                className="cursor-pointer"
+              >
+                <BlogCard post={post} />
+              </div>
+            ))}
+          </div>
         </div>
       </motion.div>
-    )
-  }
-
-  return (
-    <motion.div
-      variants={getPageTransition(getDirection())}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8"
-    >
-      <div className="backdrop-blur-sm rounded-2xl p-8">
-        <div className="flex items-center mb-12">
-          <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
-          <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Blog Posts</h2>
-          <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
-        </div>
-        <div className="grid grid-cols-1 gap-8">
-          {posts.map((post) => (
-            <div 
-              key={post._id} 
-              onClick={() => setSelectedPost(post)}
-              className="cursor-pointer"
-            >
-              <BlogCard post={post} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
   )
 } 
