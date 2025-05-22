@@ -2,7 +2,28 @@
 
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { useTheme } from "next-themes";
+
+interface AnimationRef {
+  renderer: THREE.WebGLRenderer;
+  scene: THREE.Scene;
+  camera: THREE.OrthographicCamera;
+  positions: Float32Array;
+  velocities: Float32Array;
+  particles: THREE.Points;
+  pointColors: Float32Array;
+  linePos: Float32Array;
+  lineCol: Float32Array;
+  lineA: Float32Array;
+  lines: THREE.LineSegments;
+  cPos: Float32Array;
+  cCol: Float32Array;
+  cA: Float32Array;
+  cursorLines: THREE.LineSegments;
+  connectionCounts: Uint16Array;
+  maxDistance: number;
+  start: number;
+  raf: number;
+}
 
 const vertexShader = `
   attribute vec3 color;
@@ -28,8 +49,7 @@ const fragmentShader = `
 const ParticleBackground: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mousePosRef = useRef<{ x: number; y: number } | null>(null);
-  const animRef = useRef<any>(null);
-  const { theme } = useTheme(); // we'll read theme inside animate()
+  const animRef = useRef<AnimationRef | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -173,7 +193,6 @@ const ParticleBackground: React.FC = () => {
         x: e.clientX - r.left  - r.width  / 2,
         y: -(e.clientY - r.top - r.height / 2),
       };
-      console.log('Mouse moved:', { raw: { x: e.clientX, y: e.clientY }, adjusted: newPos });
       mousePosRef.current = newPos;
     };
     const leave = () => {
@@ -227,7 +246,6 @@ const ParticleBackground: React.FC = () => {
         cursorLines,
         connectionCounts,
         maxDistance,
-        start,
       } = a;
 
       // update theme color & mode
@@ -360,17 +378,20 @@ const ParticleBackground: React.FC = () => {
       }
 
       renderer.render(scene, camera);
-      animRef.current.raf = requestAnimationFrame(animate);
+      if (animRef.current) {
+        animRef.current.raf = requestAnimationFrame(animate);
+      }
     }
 
     animate();
 
     // RESIZE
     const onResize = () => {
-      if (!animRef.current) return;
+      const current = animRef.current;
+      if (!current) return;
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const { camera, renderer } = animRef.current;
+      const { camera, renderer } = current;
       camera.left   = -w / 2;
       camera.right  =  w / 2;
       camera.top    =  h / 2;
@@ -385,8 +406,10 @@ const ParticleBackground: React.FC = () => {
       window.removeEventListener("resize", onResize);
       container.removeEventListener("mousemove", move);
       container.removeEventListener("mouseleave", leave);
-      cancelAnimationFrame(animRef.current.raf);
-      animRef.current.renderer.dispose();
+      if (animRef.current) {
+        cancelAnimationFrame(animRef.current.raf);
+        animRef.current.renderer.dispose();
+      }
       container.innerHTML = "";
       animRef.current = null;
     };

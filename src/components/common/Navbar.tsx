@@ -16,7 +16,6 @@ const navigation = [
 
 export default function Navbar({ currentSection, onSectionChange }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  console.log('navbar render')
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">

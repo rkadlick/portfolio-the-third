@@ -1,6 +1,16 @@
 import { createClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { PortableTextBlock } from '@portabletext/types'
+
+interface SanityBlock extends PortableTextBlock {
+  _type: 'block'
+  children: {
+    _type: 'span'
+    text: string
+    marks?: string[]
+  }[]
+}
 
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
@@ -16,13 +26,13 @@ export function urlFor(source: SanityImageSource) {
 }
 
 // Helper to generate excerpt from portable text
-export function generateExcerpt(blocks: any[], length: number = 200) {
-  const block = blocks.find(block => block._type === 'block') || blocks[0]
+export function generateExcerpt(blocks: PortableTextBlock[], length: number = 200) {
+  const block = blocks.find(block => block._type === 'block') as SanityBlock | undefined || blocks[0] as SanityBlock
   if (!block) return ''
   
   const text = block.children
-    .filter((child: any) => child._type === 'span')
-    .map((span: any) => span.text)
+    .filter(child => child._type === 'span')
+    .map(span => span.text)
     .join('')
   
   return text.length > length ? `${text.substring(0, length)}...` : text

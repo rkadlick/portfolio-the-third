@@ -5,7 +5,6 @@ import { Post } from '../../types'
 import { generateExcerpt, urlFor } from '../../lib/sanity'
 
 export default function BlogCard({ post }: { post: Post }) {
-  console.log(post)
   return (
     <div className="card cursor-pointer hover:shadow-lg transition-shadow duration-200">
       <div className="flex">

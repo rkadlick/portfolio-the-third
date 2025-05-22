@@ -35,7 +35,6 @@ const socialLinks = [
 export default function Footer() {
   const { currentSection } = useSection()
   const isHome = currentSection === 'home'
-  console.log(currentSection)
 
   if (isHome) return null
 
