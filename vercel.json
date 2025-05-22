@@ -1,14 +1,14 @@
 {
 	"builds": [
-	  {
-		"src": "src/package.json",
-		"use": "@vercel/next"
-	  },
-	  {
-		"src": "sanity/package.json",
-		"use": "@vercel/static-build",
-		"config": { "distDir": "studio-dist" }
-	  }
+		{
+			"src": "src/next.config.js",
+			"use": "@vercel/next"
+		  },
+		  {
+			"src": "sanity/package.json",
+			"use": "@vercel/static-build",
+			"config": { "distDir": "studio-dist" }
+		  }
 	],
 	"routes": [
 	  { "src": "/studio/(.*)", "dest": "/studio-dist/$1" },
