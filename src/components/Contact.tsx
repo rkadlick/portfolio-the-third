@@ -22,7 +22,7 @@ type SubmissionStatus = {
 function PaperPlaneIcon() {
   return (
     <svg
-      className="w-5 h-5" 
+      className="w-5 h-5 icon-spin" 
       viewBox="0 0 24 24" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
@@ -173,7 +173,7 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
                   disabled={isSubmitting}
                   className="button button-primary w-full sm:w-auto cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <span className="button-text justify-center relative" style={{ minWidth: '108px' }}>
+                  <span className="button-text">
                     {isSubmitting ? (
                       <>
                         {/* Invisible placeholder to maintain button size */}
