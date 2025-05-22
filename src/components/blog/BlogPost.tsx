@@ -1,33 +1,69 @@
 'use client'
 
 import Image from 'next/image'
-import { PortableText } from '@portabletext/react'
+import { PortableText, PortableTextComponentProps } from '@portabletext/react'
 import { Post } from '../../types'
 import { urlFor } from '../../lib/sanity'
 
+interface ImageValue {
+  _type: string
+  asset: {
+    _ref: string
+    _type: string
+  }
+  alt?: string
+  caption?: string
+  hotspot?: {
+    x: number
+    y: number
+  }
+}
+
+interface LinkMarkProps {
+  children: React.ReactNode
+  value?: {
+    href: string
+  }
+}
+
 const components = {
   types: {
-    image: ({ value }: any) => {
+    image: ({ value }: PortableTextComponentProps<ImageValue>) => {
       if (!value) return null
+      
+      // Calculate aspect ratio based on hotspot if available
+      const imageStyle = value.hotspot 
+        ? { objectPosition: `${value.hotspot.x * 100}% ${value.hotspot.y * 100}%` }
+        : { objectFit: 'contain' as const }
+
       return (
-        <div className="relative w-full h-96 my-8">
-          <Image
-            src={urlFor(value).url()}
-            alt={value.alt || ''}
-            className="rounded-lg"
-            fill
-            style={{ objectFit: 'cover' }}
-          />
-        </div>
+        <figure className="my-8">
+          <div className="relative max-w-3xl mx-auto">
+            <div className="relative h-[400px] w-full">
+              <Image
+                src={urlFor(value).url()}
+                alt={value.alt || ''}
+                className="rounded-lg"
+                fill
+                style={imageStyle}
+              />
+            </div>
+            {value.caption && (
+              <figcaption className="mt-2 text-center text-sm text-[var(--muted)]">
+                {value.caption}
+              </figcaption>
+            )}
+          </div>
+        </figure>
       )
     },
   },
   marks: {
-    link: ({ children, value }: any) => {
-      const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
+    link: ({ children, value }: LinkMarkProps) => {
+      const rel = value?.href.startsWith('/') ? undefined : 'noreferrer noopener'
       return (
         <a
-          href={value.href}
+          href={value?.href}
           rel={rel}
           className="text-[var(--primary)] hover:text-[var(--primary-hover)]"
         >
@@ -54,6 +90,18 @@ export default function BlogPost({ post, onBack }: BlogPostProps) {
           ← Back to Posts
         </button>
 
+        {post.mainImage && (
+          <div className="relative aspect-[16/9] mb-8 rounded-lg overflow-hidden">
+            <Image
+              src={urlFor(post.mainImage).url()}
+              alt={post.title}
+              className="object-cover"
+              fill
+              priority
+            />
+          </div>
+        )}
+
         <header className="mb-8">
           <div className="flex items-center mb-4 text-sm text-[var(--muted)]">
             <time dateTime={post.publishedAt}>
@@ -76,18 +124,6 @@ export default function BlogPost({ post, onBack }: BlogPostProps) {
             {post.title}
           </h1>
         </header>
-
-        {post.mainImage && (
-          <div className="relative aspect-video mb-8 rounded-lg overflow-hidden">
-            <Image
-              src={urlFor(post.mainImage).url()}
-              alt={post.title}
-              className="object-cover"
-              fill
-              priority
-            />
-          </div>
-        )}
 
         <div className="prose prose-lg prose-blue mx-auto dark:prose-invert max-w-none">
           <PortableText value={post.body} components={components} />

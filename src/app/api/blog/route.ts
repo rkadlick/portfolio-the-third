@@ -6,6 +6,7 @@ export async function GET() {
     const posts = await client.fetch(`
       *[_type == "post"] | order(publishedAt desc) {
         _id,
+        mainImage,
         title,
         slug,
         publishedAt,
