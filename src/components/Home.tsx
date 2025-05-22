@@ -60,7 +60,7 @@ export default function Home({ fromSection }: HomeProps) {
   return (
     <div className="lg:fixed lg:inset-0 min-h-screen flex items-center justify-center overflow-y-auto lg:overflow-hidden">
       <motion.div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 z-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{
@@ -77,9 +77,9 @@ export default function Home({ fromSection }: HomeProps) {
         initial="initial"
         animate="animate"
         exit="exit"
-        className="flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl mx-auto px-8 py-24 lg:-translate-y-16"
+        className="pointer-events-none relative z-10 flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl mx-auto px-8 py-24 lg:-translate-y-16"
       >
-        <div className="w-full lg:w-[60%] bg-[var(--card-bg)]/60 backdrop-blur-md rounded-2xl p-12">
+        <div className="pointer-events-auto w-full lg:w-[60%] bg-[var(--card-bg)]/60 backdrop-blur-md rounded-2xl p-12">
           <h1 className="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl">
             <span className="block mb-2">Hi, I&apos;m Ryan</span>
             <span
@@ -125,7 +125,7 @@ export default function Home({ fromSection }: HomeProps) {
           </div>
         </div>
 
-        <div className="mt-8 lg:mt-0 w-full max-w-[300px] lg:max-w-none lg:w-[40%] lg:pl-12">
+        <div className="pointer-events-auto mt-8 lg:mt-0 w-full max-w-[300px] lg:max-w-none lg:w-[40%] lg:ml-12">
           <div className="relative w-full max-w-md">
             <HolographicImage
               src="/profilePictureBackground.png"
