@@ -91,12 +91,13 @@ export default function Home({ fromSection }: HomeProps) {
           </h1>
 
           <p className="mt-4 text-[var(--muted)] text-lg md:text-xl">
-            As a Software Developer with a Master&apos;s in Computer Science,
-            my expertise lies in crafting web applications using technologies
-            such as React, Next.js, and a full-stack skillset encompassing
-            Python and Java. I&apos;m also deeply interested in exploring the
-            world of AI. I look forward to engaging with new opportunities and
-            contributing my skills to exciting ventures.
+            As a Software Developer with a Master&apos;s in Computer Science, my
+            expertise lies in crafting web applications using technologies such
+            as React, Next.js, and a full-stack skillset encompassing Python and
+            Java. I&apos;m also deeply interested in exploring the world of AI.
+            Explore my diverse projects here to see my skills in action. I look
+            forward to engaging with new opportunities and contributing my
+            skills to exciting ventures.
           </p>
 
           <div className="flex space-x-4 mt-6">
