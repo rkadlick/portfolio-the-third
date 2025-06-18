@@ -1,34 +1,41 @@
-"use client"; // Mark this as a Client Component
+// app/providers.tsx (REFINED SOLUTION)
+"use client";
 
 import { ThemeProvider } from "next-themes";
 import { useState, useEffect } from "react";
-import { SectionContext } from "../context/SectionContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  // Avoid hydration mismatch by mounting ThemeProvider only on the client
   const [mounted, setMounted] = useState(false);
-  const [currentSection, setCurrentSection] = useState<'home' | 'contact' | 'projects' | 'blog'>('home');
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const handleSectionChange = (section: 'home' | 'contact' | 'projects' | 'blog') => {
-    setCurrentSection(section);
-  };
-
+  // During SSR or initial client render, we don't have the ThemeProvider,
+  // so children are rendered directly under <body>. This path is fine.
   if (!mounted) {
-    // Render nothing or a fallback on the server
-    // to avoid hydration mismatch before client mount
-    // You could return null or a simple fragment
     return <>{children}</>;
   }
 
+  // Once mounted, we need ThemeProvider to wrap the children.
+  // The key is that the ThemeProvider component itself (or a wrapper around it)
+  // needs to act as the single expanding flex item within the body's flex column.
   return (
-    <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
-      <SectionContext.Provider value={{ currentSection, onSectionChange: handleSectionChange }}>
-        {children}
-      </SectionContext.Provider>
+    // Instead of adding a div with min-h-screen flex flex-col here,
+    // which then contains ThemeProvider, which then contains the app structure,
+    // we need to make sure ThemeProvider's output is the flex item itself.
+    // next-themes's ThemeProvider typically renders as a <div> by default.
+    // So, we need to pass the flex properties to that div.
+    <ThemeProvider
+      attribute="data-theme"
+      defaultTheme="system"
+      enableSystem
+      // You can try passing className here directly if ThemeProvider supports it on its root element
+      // className="flex flex-col flex-grow" // <--- TRY THIS FIRST
+      // If className doesn't work directly on ThemeProvider's root element,
+      // you might need to wrap ThemeProvider in a div that takes these properties.
+    >
+      {children}
     </ThemeProvider>
   );
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useSection } from '../../context/SectionContext'
 
 const socialLinks = [
   {
@@ -33,14 +32,9 @@ const socialLinks = [
 ]
 
 export default function Footer() {
-  const { currentSection } = useSection()
-  const isHome = currentSection === 'home'
-
-  if (isHome) return null
-
   return (
     <motion.footer 
-      className="bg-[var(--card-bg)] border-t border-[var(--border)] relative z-10"
+      className="w-full bg-[var(--card-bg)] border-t border-[var(--border)] shrink-0"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

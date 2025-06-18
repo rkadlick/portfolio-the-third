@@ -1,26 +1,23 @@
 "use client"
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import Logo from './Logo'
 
-interface NavbarProps {
-  currentSection: 'home' | 'contact' | 'projects' | 'blog';
-  onSectionChange: (section: 'home' | 'contact' | 'projects' | 'blog') => void;
-}
-
 const navigation = [
-  { name: 'Projects', section: 'projects' as const },
-  { name: 'Contact', section: 'contact' as const },
-  { name: 'Blog', section: 'blog' as const },
+  { name: 'Projects', href: '/projects' },
+  { name: 'Contact', href: '/contact' },
+  { name: 'Blog', href: '/blog' },
 ]
 
-export default function Navbar({ currentSection, onSectionChange }: NavbarProps) {
+export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Background container */}
-      
       <div className="fixed top-0 left-1/2 h-[4.5rem] w-full -translate-x-1/2 
         border border-white/[0.1] dark:border-white/[0.05]
         bg-[var(--card-bg)]/80 dark:bg-[var(--card-bg)]/75
@@ -34,24 +31,24 @@ export default function Navbar({ currentSection, onSectionChange }: NavbarProps)
           <div className="flex items-center justify-between h-full">
             {/* Logo - always visible in header */}
             <div className="flex items-center justify-center h-full sm:justify-start w-full sm:w-auto">
-              <button 
-                onClick={() => onSectionChange('home')}
-                className={`nav-link ${currentSection === 'home' ? 'active' : ''}`}
+              <Link 
+                href="/"
+                className={`nav-link ${pathname === '/' ? 'active' : ''}`}
               >
                 <Logo />
-              </button>
+              </Link>
             </div>
 
             {/* Navigation Links - hidden on mobile */}
             <div className="hidden sm:flex items-center justify-center gap-1 h-full">
               {navigation.map((item) => (
-                <button
+                <Link
                   key={item.name}
-                  onClick={() => onSectionChange(item.section)}
-                  className={`nav-link ${currentSection === item.section ? 'active' : ''}`}
+                  href={item.href}
+                  className={`nav-link ${pathname === item.href ? 'active' : ''}`}
                 >
                   {item.name}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
@@ -106,20 +103,18 @@ export default function Navbar({ currentSection, onSectionChange }: NavbarProps)
         <div className="sm:hidden bg-[var(--card-bg)]/95 backdrop-blur-sm">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navigation.map((item) => (
-              <button
+              <Link
                 key={item.name}
-                onClick={() => {
-                  onSectionChange(item.section);
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`nav-link w-full ${currentSection === item.section ? 'active' : ''}`}
+                href={item.href}
+                className={`nav-link w-full ${pathname === item.href ? 'active' : ''}`}
                 style={{
                   margin: '0 auto',
                   width: '80%'
                 }}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.name}
-              </button>
+              </Link>
             ))}
           </div>
         </div>

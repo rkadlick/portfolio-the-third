@@ -7,6 +7,21 @@
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+/* Ensure the page takes up full height */
+html, body {
+  height: 100%;
+}
+
+/* Sticky footer styles */
+.wrapper {
+  min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  min-height: calc(var(--vh, 1vh) * 100);
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
 :root {
   /* Font families */
   --font-primary: 'Poppins', sans-serif;
@@ -42,6 +57,7 @@
   --nav-link-active: #000000;
   --nav-link-active-bg: #ffffff;
   --tag-bg: rgba(36, 80, 122, 0.12);
+  --link: #00B4D8;
 }
 
 [data-theme="dark"] {
@@ -72,6 +88,7 @@
   --nav-link-active: #1a1a1a;
   --nav-link-active-bg: #ffffff;
   --tag-bg: rgba(165, 212, 255, 0.15);
+  --link: #90E0EF;
 }
 
 @layer base {
@@ -512,5 +529,9 @@
   [data-theme="dark"] .nav-link:hover .logo-text,
   [data-theme="dark"] .nav-link.active .logo-text {
     color: white;
+  }
+
+  .special-link {
+    @apply text-[var(--link)] hover:text-[var(--link)]/90 transition-colors duration-200;
   }
 }

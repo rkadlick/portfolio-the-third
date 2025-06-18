@@ -2,16 +2,12 @@
 
 import { useState, FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { getPageTransition } from '@/lib/transitions'
+import PageTransition from './common/PageTransition'
 
 interface FormData {
   name: string
   email: string
   message: string
-}
-
-interface ContactProps {
-  fromSection?: 'home' | 'projects' | 'contact' | 'blog';
 }
 
 type SubmissionStatus = {
@@ -45,7 +41,7 @@ function PaperPlaneIcon() {
   )
 }
 
-export default function Contact({ fromSection = 'home' }: ContactProps) {
+export default function Contact() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -53,14 +49,6 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
   })
   const [status, setStatus] = useState<SubmissionStatus>({ type: null, message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  // Determine animation direction based on navigation flow
-  const getDirection = (): 'left' | 'right' => {
-    const sectionOrder = ['home', 'projects', 'contact', 'blog'];
-    const currentIndex = sectionOrder.indexOf('contact');
-    const fromIndex = sectionOrder.indexOf(fromSection);
-    return fromIndex < currentIndex ? 'right' : 'left';
-  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,28 +77,66 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
   };
 
   return (
-    <motion.div
-      variants={getPageTransition(getDirection())}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8"
-    >
-      <div className="backdrop-blur-sm rounded-2xl p-8">
-        <div className="flex items-center mb-4">
+    <PageTransition className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
+      <motion.div 
+        className="backdrop-blur-sm rounded-2xl p-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.7,
+          ease: [0.22, 1, 0.36, 1],
+          delay: 0.4
+        }}
+      >
+        <motion.div 
+          className="flex items-center mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+            delay: 0.6
+          }}
+        >
           <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
           <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Get in Touch</h2>
           <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
-        </div>
+        </motion.div>
 
-        <p className="text-center text-lg text-[var(--muted)] mb-12">
+        <motion.p 
+          className="text-center text-lg text-[var(--muted)] mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+            delay: 0.8
+          }}
+        >
           Have a question or want to work together? Send me a message!
-        </p>
+        </motion.p>
 
-        <div className="max-w-2xl mx-auto">
+        <motion.div 
+          className="max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+            delay: 1
+          }}
+        >
           <div className="card p-8">
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.7,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 1.2
+                }}
+              >
                 <label
                   htmlFor="name"
                   className="block text-sm font-medium text-[var(--foreground)] mb-2"
@@ -128,8 +154,16 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
                   }
                   className="block w-full rounded-md border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] shadow-sm focus:border-[var(--primary)] focus:ring-[var(--primary)] sm:text-sm"
                 />
-              </div>
-              <div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.7,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 1.4
+                }}
+              >
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-[var(--foreground)] mb-2"
@@ -147,8 +181,16 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
                   }
                   className="block w-full rounded-md border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] shadow-sm focus:border-[var(--primary)] focus:ring-[var(--primary)] sm:text-sm"
                 />
-              </div>
-              <div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.7,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 1.6
+                }}
+              >
                 <label
                   htmlFor="message"
                   className="block text-sm font-medium text-[var(--foreground)] mb-2"
@@ -166,8 +208,17 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
                   }
                   className="block w-full rounded-md border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] shadow-sm focus:border-[var(--primary)] focus:ring-[var(--primary)] sm:text-sm"
                 />
-              </div>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              </motion.div>
+              <motion.div 
+                className="flex flex-col sm:flex-row sm:items-center gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.7,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 1.8
+                }}
+              >
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -198,11 +249,11 @@ export default function Contact({ fromSection = 'home' }: ContactProps) {
                     {status.message}
                   </div>
                 )}
-              </div>
+              </motion.div>
             </form>
           </div>
-        </div>
-      </div>
-    </motion.div>
+        </motion.div>
+      </motion.div>
+    </PageTransition>
   )
 } 

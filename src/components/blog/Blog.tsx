@@ -3,19 +3,13 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Post } from '@/types'
-import { getPageTransition } from '@/lib/transitions'
-// import BlogCard from './BlogCard'
 import BlogPost from './BlogPost'
+import PageTransition from '../common/PageTransition'
 
 // Pre-load blog posts data
 let preloadedPosts: Post[] | null = null;
 
-interface BlogProps {
-  fromSection?: string;
-}
-
-export default function Blog({ fromSection }: BlogProps) {
-  // const [posts, setPosts] = useState<Post[]>([])
+export default function Blog() {
   const [loading, setLoading] = useState(!preloadedPosts)
   const [selectedPost, setSelectedPost] = useState<Post | null>(null)
 
@@ -23,14 +17,12 @@ export default function Blog({ fromSection }: BlogProps) {
     async function fetchPosts() {
       try {
         if (preloadedPosts) {
-          // setPosts(preloadedPosts)
           setLoading(false)
           return
         }
 
         const response = await fetch('/api/blog')
         const data = await response.json()
-        // setPosts(data)
         preloadedPosts = data
       } catch (error) {
         console.error('Error fetching posts:', error)
@@ -42,15 +34,6 @@ export default function Blog({ fromSection }: BlogProps) {
     fetchPosts()
   }, [])
 
-  const getDirection = () => {
-    const sections = ['home', 'projects', 'contact', 'blog']
-    const currentIndex = sections.indexOf('blog')
-    const fromIndex = fromSection ? sections.indexOf(fromSection) : -1
-    
-    if (fromIndex === -1) return 'left'
-    return fromIndex < currentIndex ? 'right' : 'left'
-  }
-
   if (loading) {
     return (
       <div className="w-full flex items-center justify-center">
@@ -61,53 +44,67 @@ export default function Blog({ fromSection }: BlogProps) {
 
   if (selectedPost) {
     return (
-        <motion.div
-          variants={getPageTransition(getDirection())}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8"
+      <PageTransition className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
+        <motion.div 
+          className="backdrop-blur-sm rounded-2xl p-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+            delay: 0.4
+          }}
         >
-          <div className="backdrop-blur-sm rounded-2xl p-8">
-            <BlogPost post={selectedPost} onBack={() => setSelectedPost(null)} />
-          </div>
+          <BlogPost post={selectedPost} onBack={() => setSelectedPost(null)} />
         </motion.div>
+      </PageTransition>
     )
   }
 
   return (
-    
-      <motion.div
-        variants={getPageTransition(getDirection())}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8"
+    <PageTransition className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
+      <motion.div 
+        className="backdrop-blur-sm rounded-2xl p-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.7,
+          ease: [0.22, 1, 0.36, 1],
+          delay: 0.4
+        }}
       >
-        <div className="backdrop-blur-sm rounded-2xl p-8">
-          <div className="flex items-center mb-12">
-            <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
-            <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Blog Posts</h2>
-            <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
-          </div>
-          <div className="grid grid-cols-1 gap-8">
-            {/* {posts.map((post) => (
-              <div 
-                key={post._id} 
-                onClick={() => setSelectedPost(post)}
-                className="cursor-pointer"
-              >
-                <BlogCard post={post} />
-              </div>
-            ))} */}
-            <div className="flex items-center justify-center">
-              <div className="flex flex-col items-center justify-center">
-                <h2 className="text-2xl font-bold text-[var(--foreground)]">No blog posts yet</h2>
-                <p className="text-sm text-[var(--foreground)]">Check back later for updates</p>
-              </div>
+        <motion.div 
+          className="flex items-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+            delay: 0.6
+          }}
+        >
+          <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+          <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Blog Posts</h2>
+          <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
+        </motion.div>
+        <motion.div 
+          className="grid grid-cols-1 gap-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+            delay: 0.8
+          }}
+        >
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center">
+              <h2 className="text-2xl font-bold text-[var(--foreground)]">No blog posts yet</h2>
+              <p className="text-sm text-[var(--foreground)]">Check back later for updates</p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
+    </PageTransition>
   )
 } 
