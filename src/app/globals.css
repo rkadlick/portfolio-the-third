@@ -7,11 +7,6 @@
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-/* Ensure the page takes up full height */
-html, body {
-  height: 100%;
-}
-
 /* Sticky footer styles */
 .wrapper {
   min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
@@ -58,6 +53,12 @@ html, body {
   --nav-link-active-bg: #ffffff;
   --tag-bg: rgba(36, 80, 122, 0.12);
   --link: #00B4D8;
+}
+
+/* Ensure the page takes up full height */
+html, body {
+  height: 100%;
+  background-color: var(--background);
 }
 
 [data-theme="dark"] {
