@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, systemTheme } = useTheme()
 
   useEffect(() => {
     setMounted(true)
@@ -15,13 +15,16 @@ export default function ThemeToggle() {
     return null
   }
 
+  // Get the effective theme (either user selected or system theme)
+  const currentTheme = theme === 'system' ? systemTheme : theme
+
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
       className="theme-toggle-button"
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? (
+      {currentTheme === "dark" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
