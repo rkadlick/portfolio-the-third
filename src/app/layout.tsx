@@ -34,27 +34,21 @@ export default function RootLayout({
             } catch (e) {}
           })();`
         }} />
-        <style dangerouslySetInnerHTML={{
+<style dangerouslySetInnerHTML={{
           __html: `
-            /*
-              Define the dark mode variables here. These will be available instantly
-              as soon as the HTML is parsed. Only include variables that directly
-              affect the background and foreground, to keep it minimal.
-            */
-            [data-theme="dark"] {
-              --background: #1a1a1a; /* Your dark background color */
-              --foreground: #ffffff; /* Your dark foreground color */
-              /* You might also need card-bg if it's the primary background of your sections */
-              --card-bg: #32323e;
-              /* Add any other VARS that are critical to prevent the flash (e.g., primary text, button backgrounds) */
-              /* You do NOT need to copy ALL vars from globals.css, just the ones that show up early. */
+            html {
+              background-color: #ffffff;
+              color: #1a1a1a;
             }
-
-            /* Optional, but often helpful: Explicitly set html/body background to use the variable */
-            /* This makes sure the background applies even to the bare <body> before any React content */
-            html, body {
-              background-color: var(--background);
-              color: var(--foreground);
+            html[data-theme='dark'] {
+              background-color: #1a1a1a;
+              color: #ffffff;
+            }
+            html {
+              color-scheme: light;  
+            }
+            html[data-theme='dark'] {
+              color-scheme: dark; 
             }
           `
         }} />
