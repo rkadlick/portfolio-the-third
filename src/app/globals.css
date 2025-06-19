@@ -58,6 +58,7 @@
 /* Ensure the page takes up full height */
 html, body {
   height: 100%;
+  background-color: var(--background);
 }
 
 [data-theme="dark"] {

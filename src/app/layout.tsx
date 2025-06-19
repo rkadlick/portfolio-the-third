@@ -34,24 +34,6 @@ export default function RootLayout({
             } catch (e) {}
           })();`
         }} />
-<style dangerouslySetInnerHTML={{
-          __html: `
-            html {
-              background-color: #ffffff;
-              color: #1a1a1a;
-            }
-            html[data-theme='dark'] {
-              background-color: #1a1a1a;
-              color: #ffffff;
-            }
-            html {
-              color-scheme: light;  
-            }
-            html[data-theme='dark'] {
-              color-scheme: dark; 
-            }
-          `
-        }} />
         <Providers>
           <Navbar />
           <main className="flex-grow pt-24">
