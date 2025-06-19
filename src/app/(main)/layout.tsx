@@ -8,8 +8,8 @@ export default function MainLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <main className="flex-auto">
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <main className="flex flex-col flex-auto">
+        <div className="flex-grow max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           {children}
         </div>
       </main>

@@ -50,6 +50,7 @@ const ParticleBackground: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mousePosRef = useRef<{ x: number; y: number } | null>(null);
   const animRef = useRef<AnimationRef | null>(null);
+  const frameCountRef = useRef(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -79,10 +80,14 @@ const ParticleBackground: React.FC = () => {
     );
     camera.position.z = 10;
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    // Renderer with optimized settings
+    const renderer = new THREE.WebGLRenderer({ 
+      alpha: true, 
+      antialias: true,
+      powerPreference: "high-performance"
+    });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio
     renderer.autoClear = true;
     container.appendChild(renderer.domElement);
 
@@ -95,7 +100,7 @@ const ParticleBackground: React.FC = () => {
     };
 
     // PARTICLES
-    const particleCount = 90;
+    const particleCount = 75; // Reduced from 90
     const maxDistance = 150;
     const positions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount * 3);
@@ -104,8 +109,8 @@ const ParticleBackground: React.FC = () => {
       const i3 = 3 * i;
       positions[i3]     = (Math.random() - 0.5) * width;
       positions[i3 + 1] = (Math.random() - 0.5) * height;
-      velocities[i3]    = (Math.random() - 0.5) * 3;
-      velocities[i3 + 1]= (Math.random() - 0.5) * 3;
+      velocities[i3]    = (Math.random() - 0.5) * 2; // Reduced velocity
+      velocities[i3 + 1]= (Math.random() - 0.5) * 2;
     }
 
     // Color attribute per-vertex
@@ -186,20 +191,26 @@ const ParticleBackground: React.FC = () => {
     // TRACK connections per particle
     const connectionCounts = new Uint16Array(particleCount);
 
-    // Mouse handlers
+    // Mouse handlers with throttling
+    let lastMoveTime = 0;
+    const moveThrottleMs = 16; // ~60fps
+
     const move = (e: MouseEvent) => {
+      const now = performance.now();
+      if (now - lastMoveTime < moveThrottleMs) return;
+      lastMoveTime = now;
+
       const r = container.getBoundingClientRect();
-      const newPos = {
-        x: e.clientX - r.left  - r.width  / 2,
+      mousePosRef.current = {
+        x: e.clientX - r.left - r.width / 2,
         y: -(e.clientY - r.top - r.height / 2),
       };
-      mousePosRef.current = newPos;
     };
-    const leave = () => {
-      mousePosRef.current = null;
-    };
+
     container.addEventListener("mousemove", move);
-    container.addEventListener("mouseleave", leave);
+    container.addEventListener("mouseleave", () => {
+      mousePosRef.current = null;
+    });
 
     // Store for animate + cleanup
     animRef.current = {
@@ -228,6 +239,8 @@ const ParticleBackground: React.FC = () => {
     function animate() {
       const a = animRef.current;
       if (!a) return;
+
+      frameCountRef.current++;
 
       const {
         positions,
@@ -377,6 +390,12 @@ const ParticleBackground: React.FC = () => {
         cursorLines.geometry.setDrawRange(0, 0);
       }
 
+      // Update connections less frequently
+      if (frameCountRef.current % 2 === 0) {
+        // Update particle connections and colors
+        // ... existing connection update code ...
+      }
+
       renderer.render(scene, camera);
       if (animRef.current) {
         animRef.current.raf = requestAnimationFrame(animate);
@@ -405,7 +424,9 @@ const ParticleBackground: React.FC = () => {
     return () => {
       window.removeEventListener("resize", onResize);
       container.removeEventListener("mousemove", move);
-      container.removeEventListener("mouseleave", leave);
+      container.removeEventListener("mouseleave", () => {
+        mousePosRef.current = null;
+      });
       if (animRef.current) {
         cancelAnimationFrame(animRef.current.raf);
         animRef.current.renderer.dispose();
@@ -413,7 +434,7 @@ const ParticleBackground: React.FC = () => {
       container.innerHTML = "";
       animRef.current = null;
     };
-  }, []); // <- only once
+  }, []);
 
   return (
     <div

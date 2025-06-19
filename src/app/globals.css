@@ -143,7 +143,7 @@ html, body {
   /* Buttons */
   .button {
     @apply inline-flex items-center justify-center px-4 py-2 rounded-lg
-           relative overflow-hidden transition-all duration-300
+           relative overflow-hidden
            font-medium text-sm;
   }
 
@@ -153,13 +153,13 @@ html, body {
   }
 
   .button .icon-spin {
-    @apply transition-all duration-300 transform;
+    @apply transition-all duration-500;
     position: absolute;
     left: 0;
   }
 
   .button .button-text span {
-    @apply transition-all duration-300;
+    @apply transition-opacity duration-300 ease-in-out;
     margin-left: 24px;
   }
 
@@ -176,12 +176,12 @@ html, body {
   .button-primary {
     @apply bg-[var(--primary)] text-[var(--card-bg)]
            hover:shadow-lg hover:shadow-[var(--primary)]/20
-           active:scale-[0.98];
+           active:scale-[0.98] transition-shadow duration-200;
   }
 
   .button-primary::after {
     @apply content-[''] absolute inset-0 rounded-lg
-           bg-white/20 opacity-0 transition-opacity duration-300;
+           bg-white/20 opacity-0 transition-opacity duration-200;
   }
 
   .button-primary:hover::after {
@@ -197,25 +197,20 @@ html, body {
     @apply bg-transparent text-[var(--primary)]
            shadow-[inset_0_0_0_1.5px_var(--primary)]
            hover:shadow-lg hover:shadow-[var(--primary)]/20
-           active:scale-[0.98];
+           active:scale-[0.98] transition-shadow duration-200;
   }
 
   .button-secondary::after {
-    @apply content-[''] absolute inset-0 rounded-lg transition-opacity duration-300 opacity-0;
+    @apply content-[''] absolute inset-0 rounded-lg transition-opacity duration-200 opacity-0;
     background-color: var(--primary);
-    opacity: 0;
   }
 
   [data-theme="light"] .button-secondary::after {
-    opacity: 0;
     background-color: var(--primary);
-    opacity: 0;
   }
 
   [data-theme="dark"] .button-secondary::after {
-    opacity: 0;
     background-color: var(--primary);
-    opacity: 0;
   }
 
   .button-secondary:hover::after {
