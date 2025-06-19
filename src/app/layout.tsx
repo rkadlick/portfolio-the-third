@@ -25,10 +25,10 @@ export default function RootLayout({
             try {
               var theme = localStorage.getItem('theme');
               if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.setAttribute('data-theme', 'dark'); // <-- SETS THE DARK THEME ATTRIBUTE
+                document.documentElement.setAttribute('data-theme', 'dark');
               } else if (theme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
-              } else { // Fallback if no preference or invalid; assumes light as initial default
+              } else { // Fallback if no preference or invalid; defaults to light here
                 document.documentElement.setAttribute('data-theme', 'light');
               }
             } catch (e) {}

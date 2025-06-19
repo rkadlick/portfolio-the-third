@@ -7,16 +7,6 @@
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-/* Sticky footer styles */
-.wrapper {
-  min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-  min-height: calc(var(--vh, 1vh) * 100);
-}
-
-.content {
-  flex: 1 0 auto;
-}
-
 :root {
   /* Font families */
   --font-primary: 'Poppins', sans-serif;
@@ -55,10 +45,11 @@
   --link: #00B4D8;
 }
 
-/* Ensure the page takes up full height */
 html, body {
-  height: 100%;
+  height: 100%; 
   background-color: var(--background);
+  color: var(--foreground);
+  color-scheme: light;
 }
 
 [data-theme="dark"] {
@@ -90,6 +81,17 @@ html, body {
   --nav-link-active-bg: #ffffff;
   --tag-bg: rgba(165, 212, 255, 0.15);
   --link: #90E0EF;
+  color-scheme: dark;
+}
+
+/* Sticky footer styles */
+.wrapper {
+  min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  min-height: calc(var(--vh, 1vh) * 100);
+}
+
+.content {
+  flex: 1 0 auto;
 }
 
 @layer base {

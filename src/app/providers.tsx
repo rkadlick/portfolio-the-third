@@ -2,28 +2,16 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-import { useState, useEffect } from "react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
  
   return (
   
-    <ThemeProvider
-      attribute="data-theme"
-      defaultTheme="system"
-      enableSystem
-      enableColorScheme
+<ThemeProvider
+      attribute="data-theme" // Matches what Tailwind expects
+      defaultTheme="system"  // Your preferred default
+      enableSystem           // Allows system preference detection
+      enableColorScheme      // Helps browser UI adapt
     >
       {children}
     </ThemeProvider>
