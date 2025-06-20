@@ -36,7 +36,7 @@ export default function RootLayout({
         }} />
         <Providers>
           <Navbar />
-          <main className="flex-grow pt-24">
+          <main className="flex-grow pt-24 bg-[var(--background)]">
               {children}
           </main>
           <ThemeToggle />
