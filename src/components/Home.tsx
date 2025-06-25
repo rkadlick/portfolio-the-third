@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from 'react'; // Import React, useState, and useEffect
 import { motion } from "framer-motion";
 import ParticleBackground from "./ParticleBackground";
 import HolographicImage from "./HolographicImage";
@@ -48,11 +49,45 @@ function LinkedInIcon() {
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
 
+  // State to hold viewport dimensions
+  const [viewportDimensions, setViewportDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  // Function to update viewport dimensions
+  const updateViewportDimensions = () => {
+    // Check if window is defined (for SSR environments like Next.js)
+    if (typeof window !== 'undefined') {
+      setViewportDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+  };
+
+  useEffect(() => {
+    // Set initial dimensions on mount
+    updateViewportDimensions();
+
+    // Add event listeners for resize and orientation change
+    // Using `window.addEventListener` directly as this is a client component
+    window.addEventListener('resize', updateViewportDimensions);
+    window.addEventListener('orientationchange', updateViewportDimensions);
+
+    // Clean up event listeners on unmount
+    return () => {
+      window.removeEventListener('resize', updateViewportDimensions);
+      window.removeEventListener('orientationchange', updateViewportDimensions);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+
   return (
     <div className="lg:fixed lg:inset-0 min-h-screen flex items-center justify-center overflow-y-auto lg:overflow-hidden">
       {!prefersReducedMotion && (
         <motion.div
-          className="fixed inset-0 z-0"
+          // Removed inset-0 here as we'll use inline style for dimensions
+          className="fixed z-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
@@ -60,18 +95,31 @@ export default function Home() {
             ease: [0.4, 0, 0.2, 1],
             delay: 0.8,
           }}
+          // Apply the calculated pixel dimensions and necessary fixed positioning
+          style={{
+            width: viewportDimensions.width,
+            height: viewportDimensions.height,
+            top: 0,
+            left: 0,
+            transform: 'translateZ(0)', // Keep hardware acceleration
+            WebkitTransform: 'translateZ(0)', // For Safari
+            willChange: 'transform, opacity', // Hint to browser for optimization
+          }}
         >
-          <ParticleBackground />
+          {/* Only render ParticleBackground if dimensions are available to avoid FOUC */}
+          {viewportDimensions.width > 0 && viewportDimensions.height > 0 && (
+            <ParticleBackground />
+          )}
         </motion.div>
       )}
 
       <PageTransition className="pointer-events-none relative z-10 flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl mx-auto px-8 py-24 lg:-translate-y-16">
         <div className="pointer-events-auto w-full lg:w-[60%] bg-[var(--card-bg)]/60 backdrop-blur-md rounded-2xl p-12">
-          <motion.h1 
+          <motion.h1
             className="text-4xl tracking-tight font-extrabold sm:text-5xl md:text-6xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ 
+            transition={{
               duration: 0.7,
               ease: [0.22, 1, 0.36, 1],
               delay: 0.4
@@ -86,11 +134,11 @@ export default function Home() {
             </span>
           </motion.h1>
 
-          <motion.p 
+          <motion.p
             className="mt-4 text-[var(--muted)] text-lg md:text-xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ 
+            transition={{
               duration: 0.7,
               ease: [0.22, 1, 0.36, 1],
               delay: 0.6
@@ -105,11 +153,11 @@ export default function Home() {
             skills to exciting ventures.
           </motion.p>
 
-          <motion.div 
+          <motion.div
             className="flex space-x-4 mt-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ 
+            transition={{
               duration: 0.7,
               ease: [0.22, 1, 0.36, 1],
               delay: 0.8
@@ -140,11 +188,11 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <motion.div 
+        <motion.div
           className="pointer-events-auto mt-8 lg:mt-0 w-full max-w-[300px] lg:max-w-none lg:w-[40%] lg:ml-12"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
+          transition={{
             duration: 1,
             ease: [0.22, 1, 0.36, 1],
             delay: 1
