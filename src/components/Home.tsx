@@ -49,10 +49,10 @@ export default function Home() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div className="fixed lg:inset-0 min-h-screen flex items-center justify-center overflow-y-auto lg:overflow-hidden">
+    <div className="lg:fixed lg:inset-0 min-h-screen flex items-center justify-center overflow-y-auto lg:overflow-hidden">
       {!prefersReducedMotion && (
         <motion.div
-          className="absolute inset-0 z-0"
+          className="fixed inset-0 z-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
