@@ -52,7 +52,7 @@ export default function Home() {
     <div className="lg:fixed lg:inset-0 min-h-screen flex items-center justify-center overflow-y-auto lg:overflow-hidden">
       {!prefersReducedMotion && (
         <motion.div
-          className="fixed inset-0 z-0 w-screen h-[100svh]]"
+          className="fixed inset-0 z-0 w-screen full-dvh"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
