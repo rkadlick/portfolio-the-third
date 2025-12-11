@@ -8,6 +8,7 @@ interface FormData {
   name: string
   email: string
   message: string
+  honeypot?: string
 }
 
 type SubmissionStatus = {
@@ -46,6 +47,7 @@ export default function Contact() {
     name: '',
     email: '',
     message: '',
+    honeypot: '',
   })
   const [status, setStatus] = useState<SubmissionStatus>({ type: null, message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -56,6 +58,12 @@ export default function Contact() {
     setIsSubmitting(true);
     
     try {
+      if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+        setStatus({ type: 'error', message: 'Please complete all required fields.' });
+        setIsSubmitting(false);
+        return;
+      }
+
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -64,7 +72,7 @@ export default function Contact() {
       const json = await res.json();
       if (json.success) {
         setStatus({ type: 'success', message: 'Message sent successfully!' });
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', message: '', honeypot: '' });
       } else {
         setStatus({ type: 'error', message: `Error: ${json.error || 'Unknown error occurred'}` });
       }
@@ -128,6 +136,16 @@ export default function Contact() {
         >
           <div className="card p-8">
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
+              <input
+                type="text"
+                name="honeypot"
+                value={formData.honeypot}
+                onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+                className="hidden"
+                tabIndex={-1}
+                aria-hidden="true"
+                autoComplete="off"
+              />
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
