@@ -1,6 +1,7 @@
 // app/api/contact/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { logger } from '@/lib/logger'
 
 const RATE_LIMIT_MAX = 5
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000 // 10 minutes
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
 
     const contactConfig = getContactConfig()
     if (!resend || !contactConfig) {
-      console.error('Contact transport not configured')
+      logger.error('Contact transport not configured')
       return NextResponse.json(
         { success: false, error: 'Service unavailable' },
         { status: 503 }
@@ -151,7 +152,7 @@ ${message}
     })
 
     if (result.error) {
-      console.error('Email send error:', result.error)
+      logger.error('Email send error', { error: result.error })
       return NextResponse.json(
         { success: false, error: 'Failed to send email' },
         { status: 500 }
@@ -160,7 +161,7 @@ ${message}
 
     return NextResponse.json({ success: true })
   } catch (err) {
-    console.error('Email send error:', err)
+    logger.error('Email send error', { error: err })
     return NextResponse.json(
       { success: false, error: 'Failed to send email' },
       { status: 500 }

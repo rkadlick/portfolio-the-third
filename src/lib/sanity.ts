@@ -12,9 +12,20 @@ interface SanityBlock extends PortableTextBlock {
   }[]
 }
 
+const projectId =
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
+  (process.env.NODE_ENV === 'test' ? 'test' : '')
+const dataset =
+  process.env.NEXT_PUBLIC_SANITY_DATASET ||
+  (process.env.NODE_ENV === 'test' ? 'production' : '')
+
+if (!projectId || !dataset) {
+  throw new Error('Sanity configuration is missing projectId or dataset')
+}
+
 export const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  projectId,
+  dataset,
   apiVersion: '2024-03-19', // Use today's date
   useCdn: process.env.NODE_ENV === 'production',
 })
