@@ -10,6 +10,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Ryan Kadlick - Full Stack Developer",
   description: "Portfolio and blog of Ryan Kadlick, a full stack developer specializing in React, TypeScript, and Node.js",
+  metadataBase: new URL("https://ryanismy.name"),
+  alternates: {
+    canonical: "https://ryanismy.name",
+  },
 };
 
 export default function RootLayout({

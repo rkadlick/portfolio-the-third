@@ -1,10 +1,27 @@
-import Blog from '@/components/blog/Blog';
-import ErrorState from '@/components/common/ErrorState';
-import { client } from '@/lib/sanity';
+import type { Metadata } from 'next'
+import Blog from '@/components/blog/Blog'
+import ErrorState from '@/components/common/ErrorState'
+import { client } from '@/lib/sanity'
 
-export const revalidate = 3600; // adjust as you like
+export const revalidate = 3600 // adjust as you like
 
 const INCLUDE_TEST_POSTS = process.env.NEXT_PUBLIC_SHOW_TEST_POSTS === 'true';
+const baseUrl = 'https://ryanismy.name'
+const title = 'Blog – Ryan Kadlick'
+const description = 'Articles, notes, and updates from Ryan Kadlick.'
+
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: { canonical: `${baseUrl}/blog` },
+  openGraph: {
+    title,
+    description,
+    url: `${baseUrl}/blog`,
+    siteName: 'Ryan Kadlick',
+    type: 'article',
+  },
+}
 
 async function getPosts() {
   return client.fetch(`
@@ -28,6 +45,6 @@ export default async function BlogPage() {
     return <Blog posts={posts} />;
   } catch (err) {
     console.error('Blog fetch failed', err);
-    return <ErrorState title="Unable to load posts" message="Please refresh or try again later." />;
+    return <ErrorState title="Unable to load posts" message="Please refresh or try again later." />
   }
 }
