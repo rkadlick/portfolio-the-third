@@ -25,7 +25,6 @@ export default function Blog({ posts }: { posts: Post[] }) {
     );
   }
 
-  console.log(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID, process.env.NEXT_PUBLIC_SANITY_DATASET)
 
   return (
     <PageTransition className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">

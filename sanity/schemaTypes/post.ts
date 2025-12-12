@@ -49,6 +49,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'isTest',
+      title: 'Test Post',
+      type: 'boolean',
+      description: 'Mark this post as a test/draft preview item',
+      initialValue: false,
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'blockContent',

@@ -28,6 +28,7 @@ export interface Post {
   }>
   metaDescription?: string
   keywords?: string[]
+  isTest?: boolean
 }
 
 export interface Project {
