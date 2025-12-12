@@ -11,11 +11,12 @@ export default function BlogCard({ post }: { post: Post }) {
         {post.mainImage && (
           <div className="relative w-1/3 min-h-[250px]">
             <Image
-              src={urlFor(post.mainImage).url()}
+              src={urlFor(post.mainImage).width(800).height(800).quality(80).fit('crop').url()}
               alt={post.title}
               className="object-cover rounded-l-lg"
               fill
               priority
+              sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
         )}

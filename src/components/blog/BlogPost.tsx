@@ -41,11 +41,12 @@ const components = {
           <div className="relative max-w-3xl mx-auto">
             <div className="relative h-[400px] w-full">
               <Image
-                src={urlFor(value).url()}
+                src={urlFor(value).width(1600).quality(80).url()}
                 alt={value.alt || ''}
                 className="rounded-lg"
                 fill
                 style={imageStyle}
+                sizes="(max-width: 768px) 100vw, 960px"
               />
             </div>
             {value.caption && (
@@ -93,11 +94,12 @@ export default function BlogPost({ post, onBack }: BlogPostProps) {
         {post.mainImage && (
           <div className="relative aspect-[16/9] mb-8 rounded-lg overflow-hidden">
             <Image
-              src={urlFor(post.mainImage).url()}
+              src={urlFor(post.mainImage).width(1600).height(900).quality(80).fit('crop').url()}
               alt={post.title}
               className="object-cover"
               fill
               priority
+              sizes="(max-width: 768px) 100vw, 960px"
             />
           </div>
         )}

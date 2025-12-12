@@ -94,7 +94,7 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
           <div className="featured-project-image-container md:block hidden">
             <div className="featured-project-image">
               <Image
-                src={urlFor(project.image).url()}
+                src={urlFor(project.image).width(1600).height(900).quality(80).fit('crop').url()}
                 alt={project.title}
                 className="object-cover"
                 fill
