@@ -1,48 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import ProjectCard from './ProjectCard'
 import { Project } from '../types'
 import PageTransition from './common/PageTransition'
 
-// Pre-load projects data
-let preloadedProjects: Project[] | null = null;
-
-export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [isLoading, setIsLoading] = useState(!preloadedProjects)
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        if (preloadedProjects) {
-          setProjects(preloadedProjects)
-          setIsLoading(false)
-          return
-        }
-
-        const response = await fetch('/api/projects')
-        const data = await response.json()
-        setProjects(data)
-        preloadedProjects = data
-      } catch (error) {
-        console.error('Error fetching projects:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchProjects()
-  }, [])
-
-  if (isLoading) {
-    return (
-      <div className="w-full flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
-      </div>
-    )
-  }
+export default function Projects({ projects }: { projects: Project[] }) {
 
   const featuredProjects = projects.filter((p: Project) => p.isFeatured)
   const regularProjects = projects.filter((p: Project) => !p.isFeatured)
