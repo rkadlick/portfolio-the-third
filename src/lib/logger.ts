@@ -1,9 +1,8 @@
 type LogLevel = 'info' | 'warn' | 'error'
 
 function log(level: LogLevel, message: string, meta?: Record<string, unknown>) {
-  const payload = meta ? { ...meta, level, message } : { level, message }
-  // eslint-disable-next-line no-console
-  console[level](`[${level}] ${message}`, meta ?? '')
+  const payload = meta ? { ...meta, level, message, timestamp: new Date().toISOString() } : { level, message, timestamp: new Date().toISOString() }
+  console[level](JSON.stringify(payload))
 }
 
 export const logger = {
