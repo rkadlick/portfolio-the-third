@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import ParticleBackground from "./ParticleBackground";
+import dynamic from "next/dynamic";
+const ParticleBackground = dynamic(() => import("./ParticleBackground"), { ssr: false });
 import HolographicImage from "./HolographicImage";
 import Link from "next/link";
 import PageTransition from "./common/PageTransition";
@@ -56,9 +57,9 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
-            duration: 4,
+            duration: 0.8,
             ease: [0.4, 0, 0.2, 1],
-            delay: 0.8,
+            delay: 0.1,
           }}
         >
           <ParticleBackground />
@@ -72,9 +73,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
-              duration: 0.7,
+              duration: 0.45,
               ease: [0.22, 1, 0.36, 1],
-              delay: 0.4
+              delay: 0.1
             }}
           >
             <span className="block mb-2">Hi, I&apos;m Ryan</span>
@@ -91,9 +92,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
-              duration: 0.7,
+              duration: 0.45,
               ease: [0.22, 1, 0.36, 1],
-              delay: 0.6
+              delay: 0.2
             }}
           >
             As a Software Developer with a Master&apos;s in Computer Science, my
@@ -110,9 +111,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
-              duration: 0.7,
+              duration: 0.45,
               ease: [0.22, 1, 0.36, 1],
-              delay: 0.8
+              delay: 0.3
             }}
           >
             <a
@@ -145,9 +146,9 @@ export default function Home() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ 
-            duration: 1,
+            duration: 0.55,
             ease: [0.22, 1, 0.36, 1],
-            delay: 1
+            delay: 0.2
           }}
         >
           <div className="relative w-full max-w-md">

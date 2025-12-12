@@ -8,11 +8,11 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 export default function Projects({ projects }: { projects: Project[] }) {
   const prefersReducedMotion = useReducedMotion()
-  const baseInitial = prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }
+  const baseInitial = prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }
   const baseAnimate = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }
   const baseTransition = prefersReducedMotion
     ? { duration: 0 }
-    : { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.4 }
+    : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.05 }
 
   const featuredProjects = projects.filter((p: Project) => p.isFeatured)
   const regularProjects = projects.filter((p: Project) => !p.isFeatured)
@@ -49,11 +49,11 @@ export default function Projects({ projects }: { projects: Project[] }) {
           <motion.div
             initial={baseInitial}
             animate={baseAnimate}
-            transition={
-              prefersReducedMotion
-                ? { duration: 0 }
-                : { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.6 }
-            }
+        transition={
+          prefersReducedMotion
+            ? { duration: 0 }
+            : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.1 }
+        }
           >
             <div className="flex items-center mb-12">
               <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
@@ -66,10 +66,10 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   key={project._id}
                   initial={baseInitial}
                   animate={baseAnimate}
-                  transition={{ 
-                    duration: prefersReducedMotion ? 0 : 0.7,
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.35,
                     ease: [0.22, 1, 0.36, 1],
-                    delay: prefersReducedMotion ? 0 : 0.8 + index * 0.2
+                    delay: prefersReducedMotion ? 0 : 0.15 + index * 0.05,
                   }}
                 >
                   <ProjectCard project={project} isFeatured={true} />
@@ -86,9 +86,9 @@ export default function Projects({ projects }: { projects: Project[] }) {
             prefersReducedMotion
               ? { duration: 0 }
               : {
-                  duration: 0.7,
+                  duration: 0.35,
                   ease: [0.22, 1, 0.36, 1],
-                  delay: featuredProjects.length > 0 ? 1 : 0.6,
+                  delay: featuredProjects.length > 0 ? 0.2 : 0.1,
                 }
           }
         >
@@ -103,10 +103,10 @@ export default function Projects({ projects }: { projects: Project[] }) {
                 key={project._id}
                 initial={baseInitial}
                 animate={baseAnimate}
-                transition={{ 
-                  duration: prefersReducedMotion ? 0 : 0.7,
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 0.35,
                   ease: [0.22, 1, 0.36, 1],
-                  delay: prefersReducedMotion ? 0 : (featuredProjects.length > 0 ? 1.2 : 0.8) + index * 0.2
+                  delay: prefersReducedMotion ? 0 : (featuredProjects.length > 0 ? 0.25 : 0.15) + index * 0.05,
                 }}
               >
                 <ProjectCard project={project} />

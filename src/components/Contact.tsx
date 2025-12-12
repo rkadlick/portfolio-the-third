@@ -3,6 +3,7 @@
 import { useState, FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import PageTransition from './common/PageTransition'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 interface FormData {
   name: string
@@ -43,6 +44,13 @@ function PaperPlaneIcon() {
 }
 
 export default function Contact() {
+  const prefersReducedMotion = useReducedMotion()
+  const baseInitial = prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }
+  const baseAnimate = prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }
+  const baseTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.05 }
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -86,53 +94,37 @@ export default function Contact() {
 
   return (
     <PageTransition className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
-      <motion.div 
+      <motion.div
         className="backdrop-blur-sm rounded-2xl p-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          duration: 0.7,
-          ease: [0.22, 1, 0.36, 1],
-          delay: 0.4
-        }}
+        initial={baseInitial}
+        animate={baseAnimate}
+        transition={baseTransition}
       >
-        <motion.div 
+        <motion.div
           className="flex items-center mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.7,
-            ease: [0.22, 1, 0.36, 1],
-            delay: 0.6
-          }}
+          initial={baseInitial}
+          animate={baseAnimate}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
         >
           <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
           <h2 className="text-2xl font-bold px-4 text-[var(--foreground)]">Get in Touch</h2>
           <div className="flex-grow h-[1px] bg-[var(--border)]"></div>
         </motion.div>
 
-        <motion.p 
+        <motion.p
           className="text-center text-lg text-[var(--muted)] mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.7,
-            ease: [0.22, 1, 0.36, 1],
-            delay: 0.8
-          }}
+          initial={baseInitial}
+          animate={baseAnimate}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
         >
           Have a question or want to work together? Send me a message!
         </motion.p>
 
-        <motion.div 
+        <motion.div
           className="max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.7,
-            ease: [0.22, 1, 0.36, 1],
-            delay: 1
-          }}
+          initial={baseInitial}
+          animate={baseAnimate}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         >
           <div className="card p-8">
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
@@ -147,13 +139,9 @@ export default function Contact() {
                 autoComplete="off"
               />
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.7,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: 1.2
-                }}
+                initial={baseInitial}
+                animate={baseAnimate}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
               >
                 <label
                   htmlFor="name"
@@ -174,13 +162,9 @@ export default function Contact() {
                 />
               </motion.div>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.7,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: 1.4
-                }}
+                initial={baseInitial}
+                animate={baseAnimate}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
               >
                 <label
                   htmlFor="email"
@@ -201,13 +185,9 @@ export default function Contact() {
                 />
               </motion.div>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.7,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: 1.6
-                }}
+                initial={baseInitial}
+                animate={baseAnimate}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
               >
                 <label
                   htmlFor="message"
@@ -229,13 +209,9 @@ export default function Contact() {
               </motion.div>
               <motion.div 
                 className="flex flex-col sm:flex-row sm:items-center gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.7,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: 1.8
-                }}
+                initial={baseInitial}
+                animate={baseAnimate}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
               >
                 <button
                   type="submit"

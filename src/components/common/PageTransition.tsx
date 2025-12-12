@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 interface PageTransitionProps {
   children: ReactNode;
@@ -9,19 +10,24 @@ interface PageTransitionProps {
 }
 
 export default function PageTransition({ children, className = '' }: PageTransitionProps) {
+  const [mounted, setMounted] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  useEffect(() => setMounted(true), []);
+
+  // Skip animation on first mount to reduce initial perceived delay
+  const initial = mounted && !prefersReducedMotion ? { opacity: 0, y: 10 } : { opacity: 1 };
+  const animate = { opacity: 1, y: 0 };
+  const transition = prefersReducedMotion || !mounted
+    ? { duration: 0 }
+    : { duration: 0.2, ease: [0.22, 1, 0.36, 1] };
+
   return (
     <motion.div
       className={`w-full ${className}`}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{
-        type: 'spring',
-        stiffness: 100,
-        damping: 20,
-        mass: 1.2,
-        duration: 0.5
-      }}
+      initial={initial}
+      animate={animate}
+      exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
+      transition={transition}
     >
       {children}
     </motion.div>

@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Logo from './Logo'
 
 const navigation = [
@@ -14,6 +14,14 @@ const navigation = [
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
+
+  useEffect(() => {
+    navigation.forEach((item) => {
+      router.prefetch(item.href)
+    })
+    router.prefetch('/')
+  }, [router])
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -33,6 +41,7 @@ export default function Navbar() {
             <div className="flex items-center justify-center h-full sm:justify-start w-full sm:w-auto">
               <Link 
                 href="/"
+                prefetch
                 className={`nav-link ${pathname === '/' ? 'active' : ''}`}
               >
                 <Logo />
@@ -45,6 +54,7 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  prefetch
                   className={`nav-link ${pathname === item.href ? 'active' : ''}`}
                 >
                   {item.name}
@@ -106,6 +116,7 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch
                 className={`nav-link w-full ${pathname === item.href ? 'active' : ''}`}
                 style={{
                   margin: '0 auto',
