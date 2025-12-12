@@ -111,6 +111,16 @@ export default function ProjectCard({ project, isFeatured = false }: { project: 
     <div 
       className="card non-featured-project-card"
       onClick={() => setIsExpanded(!isExpanded)}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
+      aria-label={`View details for ${project.title}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setIsExpanded((prev) => !prev);
+        }
+      }}
     >
       <div className="flex-1">
         <div className="flex items-center justify-between">
