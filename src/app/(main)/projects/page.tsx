@@ -1,4 +1,5 @@
 import Projects from '@/components/Projects';
+import ErrorState from '@/components/common/ErrorState';
 import { client } from '@/lib/sanity';
 
 export const revalidate = 3600; // optional ISR
@@ -13,6 +14,11 @@ async function getProjects() {
 }
 
 export default async function ProjectsPage() {
-  const projects = await getProjects();
-  return <Projects projects={projects} />;
+  try {
+    const projects = await getProjects();
+    return <Projects projects={projects} />;
+  } catch (err) {
+    console.error('Projects fetch failed', err);
+    return <ErrorState title="Unable to load projects" message="Please refresh or try again later." />;
+  }
 }

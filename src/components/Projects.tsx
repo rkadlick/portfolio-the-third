@@ -10,6 +10,30 @@ export default function Projects({ projects }: { projects: Project[] }) {
   const featuredProjects = projects.filter((p: Project) => p.isFeatured)
   const regularProjects = projects.filter((p: Project) => !p.isFeatured)
 
+  if (!projects.length) {
+    return (
+      <PageTransition className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
+        <motion.div 
+          className="backdrop-blur-sm rounded-2xl p-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+            delay: 0.4
+          }}
+        >
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center text-center space-y-2">
+              <h2 className="text-2xl font-bold text-[var(--foreground)]">No projects yet</h2>
+              <p className="text-sm text-[var(--muted)]">Check back later for updates.</p>
+            </div>
+          </div>
+        </motion.div>
+      </PageTransition>
+    )
+  }
+
   return (
     <PageTransition className="max-w-7xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
       <motion.div 
